@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/khalid/Desktop/Eksamensoppgave/EksamensOppgave/header.h
+
+/home/khalid/Desktop/Eksamensoppgave/EksamensOppgave/main.c
+stdio.h
+-
+malloc.h
+-
+memory.h
+-
+header.h
+/home/khalid/Desktop/Eksamensoppgave/EksamensOppgave/header.h
+
