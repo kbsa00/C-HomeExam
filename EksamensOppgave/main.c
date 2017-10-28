@@ -3,7 +3,6 @@
 #include <memory.h>
 #include "header.h"
 
-
 typedef struct _NODE{
     char * pszName;
     ULONG ulIntval;
@@ -11,6 +10,8 @@ typedef struct _NODE{
     struct _NODE * pnNodes[MAX_NODE];
 
 }Node;
+
+Node * root = NULL;
 
 void readFile(char * filename){
 
@@ -34,48 +35,25 @@ void readFile(char * filename){
 
     rewind(fp);
 
-    int  countLengthStrings[counterLines];
-    int index = 0;
-    int counter = 0;
-
-    do{
-        line = fgetc(fp);
-
-        if(line != '\n' && line != '\0'){
-            counter++;
-        }
-        else{
-            countLengthStrings[index] =  counter;
-            counter = 0;
-
-            index++;
-        }
-    }
-    while(!feof(fp));
-
-    for(int i = 0; i < counterLines; i++) printf("%d", countLengthStrings[i]);
-
+    long size;
+    fseek(fp, 0, SEEK_END);
+    size = ftell(fp);
     rewind(fp);
-
     fclose(fp);
 
     FILE * fpointer;
     fpointer = fopen(filename, "r");
 
-    index = 0;
-    char * readline;
+    char readline[size];
     char * dataValue[counterLines];
 
-    //TODO FIND THE EXCACT BYTE SIZE SO THAT YOU CAN INPUT THE TEXTFILE IN DATAVALUE..
-
+    int index = 0 ;
 
     if(fpointer != NULL) {
 
-        while(!feof(fp)) {
-            int current = countLengthStrings[index];
-
-            printf("%zu\n", sizeof(readline));
-
+        while(fgets(readline, sizeof(readline),fpointer) != NULL){
+            dataValue[index] = malloc(sizeof(readline));
+            strcpy(dataValue[index], readline);
             index++;
         }
     }
@@ -83,13 +61,18 @@ void readFile(char * filename){
         printf("ERROR");
     }
 
-
     fclose(fpointer);
+}
+
+
+void createNodes(char * string){
+
 
 }
 
 int main(void) {
     char * filename = "file.txt";
+    Node * root = malloc(sizeof(Node));
     readFile(filename);
 
     return 0;
