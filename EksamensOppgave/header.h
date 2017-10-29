@@ -9,7 +9,18 @@
 
 typedef unsigned long ULONG;
 
+
+typedef struct _NODE{
+    char * pszName;
+    ULONG ulIntval;
+    char * pszString;
+    struct _NODE * pnNodes[MAX_NODE];
+
+}Node;
+
+
 void readFile(char * filename);
+
 void setINT(int number);
 void setString(char * string);
 int getINT();

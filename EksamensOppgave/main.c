@@ -3,15 +3,11 @@
 #include <memory.h>
 #include "header.h"
 
-typedef struct _NODE{
-    char * pszName;
-    ULONG ulIntval;
-    char * pszString;
-    struct _NODE * pnNodes[MAX_NODE];
+void splitUp(char *string);
+void createNode(char * splitString);
 
-}Node;
 
-Node * root = NULL;
+Node * root;
 
 void readFile(char * filename){
 
@@ -60,20 +56,113 @@ void readFile(char * filename){
     else{
         printf("ERROR");
     }
-
     fclose(fpointer);
+
+
+
+    for(int i = 0; i < 1; i++){
+       createNode(*(dataValue+i));
+    }
 }
 
+/*
 
-void createNodes(char * string){
+void splitUp(char * string) {
 
+    char *ph = strtok(string, ". =");
+
+        while (ph != NULL) {
+
+            createNode(ph);
+
+            ph = strtok(NULL, ". =");
+        }
+}*/
+
+
+void createNode(char * splitString){
+
+    Node * conducter = root;
+    Node * subnode = malloc(sizeof(Node));
+
+    if(conducter != NULL){
+
+        int index = 0;
+        char * ph = strtok(splitString,". =");
+
+        while(ph != NULL){
+
+            if(conducter->pnNodes[index] == NULL){
+                if(strcmp(ph, splitString) == 0) {
+                    subnode->pszName = ph;
+                    conducter->pnNodes[index] = subnode;
+                    printf("Created node: %s", subnode->pszName);
+                }
+
+                else if(strcmp(conducter->pszName, splitString) == 0){
+                    printf("\n%s is already created: ", splitString);
+                    //TODO  if- statment with strings that starts with *
+                    printf("\nWill now create node for: %s", ph );
+                    Node * subnode2 = malloc(sizeof(Node));
+                    subnode2->pszName = ph;
+                    subnode->pnNodes[index] = subnode2;
+
+                }
+            }
+
+            else if(conducter->pnNodes[index] != NULL){
+                conducter = subnode;
+                if(strcmp(conducter->pszName, splitString) == 0){
+                    printf("\n%s is already created: ", splitString);
+                  //TODO  if- statment with strings that starts with *
+                    printf("\nWill now create node for: %s", ph );
+                    Node * subnode2 = malloc(sizeof(Node));
+                    subnode2->pszName = ph;
+                    subnode->pnNodes[index] = subnode2;
+
+                }
+            }
+            else{
+                index++;
+            }
+
+
+            ph = strtok(NULL,". =");
+
+        }
+    }
+    else{
+        printf("Conducter == NULL, Something went wrong with root");
+    }
 
 }
 
 int main(void) {
+    root = malloc(sizeof(Node));
+    root->pszName = "root";
+
     char * filename = "file.txt";
-    Node * root = malloc(sizeof(Node));
     readFile(filename);
 
+    /* for(int i = 0; i < MAX_NODE; i++){
+
+               if(conducter->pnNodes[i] == NULL){
+
+                  subnode->pszName = splitString;
+                  conducter->pnNodes[i] = subnode;
+                   printf("Created node: %s", splitString);
+                   break;
+               }
+               else if(conducter->pnNodes[i] != NULL){
+                   conducter = subnode;
+                   if(strcmp(conducter->pszName, splitString) == 0){
+                       printf("%s is already created: ", splitString);
+
+                   }
+
+               }
+
+
+           }*/
     return 0;
 }
