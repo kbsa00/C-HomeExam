@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <malloc.h>
 #include <memory.h>
+#include <ctype.h>
 #include "header.h"
 
 void splitUp(char *string);
@@ -86,46 +87,46 @@ void createNode(char * splitString){
     Node * subnode = malloc(sizeof(Node));
 
     if(conducter != NULL){
-
         int index = 0;
+        int counter = 0;
         char * ph = strtok(splitString,". =");
 
         while(ph != NULL){
 
-            if(conducter->pnNodes[index] == NULL){
-                if(strcmp(ph, splitString) == 0) {
-                    subnode->pszName = ph;
-                    conducter->pnNodes[index] = subnode;
-                    printf("Created node: %s", subnode->pszName);
+            for(int i = 0; i < MAX_NODE; i++){
+
+                if(conducter->pnNodes[i] == NULL){
+                    counter++;
                 }
 
-                else if(strcmp(conducter->pszName, splitString) == 0){
-                    printf("\n%s is already created: ", splitString);
-                    //TODO  if- statment with strings that starts with *
-                    printf("\nWill now create node for: %s", ph );
-                    Node * subnode2 = malloc(sizeof(Node));
-                    subnode2->pszName = ph;
-                    subnode->pnNodes[index] = subnode2;
+                 else if(conducter->pnNodes[i] != NULL){
+                    conducter = conducter->pnNodes[i];
 
+                    if(strcmp(conducter->pszName, splitString) == 0){
+                        printf("\nAlready created String");
+                        printf("\nCreating node: %s", ph);
+                        int co = 0;
+                        subnode->pszName = ph;
+                        conducter->pnNodes[co] = subnode;
+                        conducter = subnode;
+
+                    } else{
+                        //TODO: HUSK Å SETT HEADER SIN VERDI SOM OPPDATERING HER INNE.....
+                        conducter = root; 
+                    }
+                }
+                else if(isdigit(ph)){
+                    conducter->ulIntval = (ULONG) ph;
+                    conducter = root;
                 }
             }
 
-            else if(conducter->pnNodes[index] != NULL){
-                conducter = subnode;
-                if(strcmp(conducter->pszName, splitString) == 0){
-                    printf("\n%s is already created: ", splitString);
-                  //TODO  if- statment with strings that starts with *
-                    printf("\nWill now create node for: %s", ph );
-                    Node * subnode2 = malloc(sizeof(Node));
-                    subnode2->pszName = ph;
-                    subnode->pnNodes[index] = subnode2;
+            if(counter == MAX_NODE){
+                printf("Creating node for the first time: %s", ph);
+                subnode->pszName = ph;
+                conducter->pnNodes[index] = subnode;
 
-                }
             }
-            else{
-                index++;
-            }
-
 
             ph = strtok(NULL,". =");
 
@@ -146,21 +147,25 @@ int main(void) {
 
     /* for(int i = 0; i < MAX_NODE; i++){
 
-               if(conducter->pnNodes[i] == NULL){
+            if(conducter->pnNodes[index] == NULL){
+                if(strcmp(ph, splitString) == 0) {
+                    subnode->pszName = ph;
+                    conducter->pnNodes[index] = subnode;
+                    printf("Created node: %s", subnode->pszName);
+                    conducter = subnode;
+                }
 
-                  subnode->pszName = splitString;
-                  conducter->pnNodes[i] = subnode;
-                   printf("Created node: %s", splitString);
-                   break;
-               }
-               else if(conducter->pnNodes[i] != NULL){
-                   conducter = subnode;
-                   if(strcmp(conducter->pszName, splitString) == 0){
-                       printf("%s is already created: ", splitString);
+                else if(strcmp(conducter->pszName, splitString) == 0){
+                    printf("\n%s is already created: ", splitString);
+                    //TODO  if- statment with strings that starts with *
+                    printf("\nWill now create node for: %s", ph );
+                    Node * subnode2 = malloc(sizeof(Node));
+                    subnode2->pszName = ph;
+                    subnode->pnNodes[index] = subnode2;
+                    conducter = subnode2;
 
-                   }
-
-               }
+                }
+            }
 
 
            }*/
