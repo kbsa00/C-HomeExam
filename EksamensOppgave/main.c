@@ -66,21 +66,6 @@ void readFile(char * filename){
     }
 }
 
-/*
-
-void splitUp(char * string) {
-
-    char *ph = strtok(string, ". =");
-
-        while (ph != NULL) {
-
-            createNode(ph);
-
-            ph = strtok(NULL, ". =");
-        }
-}*/
-
-
 void createNode(char * splitString){
 
     Node * conducter = root;
@@ -112,7 +97,7 @@ void createNode(char * splitString){
 
                     } else{
                         //TODO: HUSK Å SETT HEADER SIN VERDI SOM OPPDATERING HER INNE.....
-                        conducter = root; 
+                        conducter = root;
                     }
                 }
                 else if(isdigit(ph)){
@@ -144,30 +129,6 @@ int main(void) {
 
     char * filename = "file.txt";
     readFile(filename);
-
-    /* for(int i = 0; i < MAX_NODE; i++){
-
-            if(conducter->pnNodes[index] == NULL){
-                if(strcmp(ph, splitString) == 0) {
-                    subnode->pszName = ph;
-                    conducter->pnNodes[index] = subnode;
-                    printf("Created node: %s", subnode->pszName);
-                    conducter = subnode;
-                }
-
-                else if(strcmp(conducter->pszName, splitString) == 0){
-                    printf("\n%s is already created: ", splitString);
-                    //TODO  if- statment with strings that starts with *
-                    printf("\nWill now create node for: %s", ph );
-                    Node * subnode2 = malloc(sizeof(Node));
-                    subnode2->pszName = ph;
-                    subnode->pnNodes[index] = subnode2;
-                    conducter = subnode2;
-
-                }
-            }
-
-
-           }*/
+    
     return 0;
 }
