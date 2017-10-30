@@ -11,9 +11,9 @@ typedef unsigned long ULONG;
 
 
 typedef struct _NODE{
-    char * pszName;
-    ULONG ulIntval;
-    char * pszString;
+    char * pszName; //Navn på noden
+    ULONG ulIntval; // Verdi ULONG
+    char * pszString; // Verdi String
     struct _NODE * pnNodes[MAX_NODE];
 
 }Node;
@@ -27,6 +27,9 @@ int getINT();
 char getString();
 void Delete();
 void Enumerate();
+void sortAlphabetical(char * array[]);
+
+
 //getValue og setValue.. Finn ut hvilken datatype, som
 //skal sendes og returneres..
 
