@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <malloc.h>
 #include <memory.h>
+#include <ctype.h>
 #include "header.h"
 
 
-void createNode(char * splitString);
+void checkNode(char * splitString);
+Node * createSubNode(Node * parentNode, char * string);
 
 
 Node * root;
@@ -61,83 +63,104 @@ void readFile(char * filename){
 
 
     for(int i = 0; i < 1; i++){
-       createNode(*(dataValue+i));
+       checkNode(*(dataValue+i));
     }
 }
 
-void createNode(char * splitString){
+void checkNode(char * splitString){
 
     Node * conducter = root;
-    int counter = 0;
+
 
     if(conducter != NULL){
 
-        char * ph = strtok(splitString,".=");
+        char * ph = strtok(splitString,"\". ");
 
         while(ph != NULL) {
 
-            for(int j = 0; j < MAX_NODE; j++){
-
-                if(conducter->pnNodes[j] == NULL) {
-                    conducter->pnNodes[j] = NULL;
-                }
-
+            int index = 0;
+            if(strcmp(ph, "=") == 0){
+                ph = strtok(NULL,"=");
             }
 
+            if(ph[0] == '\"'){
+                ph = strtok(ph, "\"");
+                conducter->pszString = calloc(1,sizeof(ph));
+                strcpy(conducter->pszString, ph);
+                printf("Value: %s has now been placed in %s-Node", ph, conducter->pszName);
 
+                break;
+            }
 
-            for(int i = 0; i < MAX_NODE; i++){
+            while (index < MAX_NODE){
 
-                if(conducter->pnNodes[i] != NULL){
+                if(conducter->pnNodes[index] != NULL){
 
-                    if(strcmp(conducter->pnNodes[i]->pszName, ph) == 0){
-                    printf("Node is already created: %s\n", conducter->pnNodes[i]->pszName);
-                    conducter = conducter->pnNodes[i];
-                        
-                        //TODO: TWO IF STATEMENTS FOR CHECKING IF ITS A VALUE..
+                    if(strcmp(conducter->pnNodes[index]->pszName, ph) == 0){
+                    printf("Node is already created: %s\n", conducter->pnNodes[index]->pszName);
+                    conducter = conducter->pnNodes[index];
+
                     }
 
-
                 }
-                else{
-                    counter++;
+                else if(conducter->pnNodes[index] == NULL){
+                    conducter = createSubNode(conducter, ph);
+                    break;
                 }
+                index++;
             }
 
-
-            if(counter == MAX_NODE){
-                int index = 0;
-
+                index = 0;
                 while(index < MAX_NODE){
 
-                    if(conducter->pnNodes[index] == NULL) {
-                        printf("Node has never been created: %s\n", ph);
-                        Node * subnode = malloc(sizeof(Node));
-                        subnode->pszName = ph;
-                        printf("Creating %s inside node: %s\n", subnode->pszName, conducter->pszName);
-                        //TODO SOMETHING GOES WRONG IN THIS CODE BENETH...
-                        conducter->pnNodes[index] = malloc(sizeof(Node));
-                        conducter->pnNodes[index] = subnode;
-                        conducter = subnode;
-                        counter = 0;
-
-
-                        break;
-                    }
-
-                    index++;
+                if(strcmp(conducter->pnNodes[index]->pszName, ph) == 0){
+                    conducter = conducter->pnNodes[index];
+                    printf("%s-node was succesfully created\n",conducter->pszName);
+                    break;
                 }
-
+                index++;
             }
 
 
-            ph = strtok(NULL, ".=");
+
+
+
+            ph = strtok(NULL, "\". ");
         }
     }
+
     else{
         printf("Conducter == NULL, Something went wrong with root");
     }
 
+    printf("\n\n");
+
+}
+
+
+Node * createSubNode(Node * parentNode, char * string){
+
+
+    int index = 0;
+
+    while(index < MAX_NODE){
+
+        if(parentNode->pnNodes[index] == NULL){
+            printf("Will now create %s-node for the first time\n", string);
+            Node * subnode = calloc(1,sizeof(Node));
+            subnode->pszName = malloc(sizeof(strlen(string))+1);
+            strcpy(subnode->pszName, string);
+            subnode->pszName[sizeof(string)] = '\0';
+            parentNode->pnNodes[index] = subnode;
+            printf("Has now created %s-node and puts in %s-node\n", subnode->pszName, parentNode->pszName);
+            return parentNode;
+        }
+
+        index++;
+    }
+
+
+    return 0;
 }
 
 
