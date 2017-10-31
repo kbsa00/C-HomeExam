@@ -2,6 +2,7 @@
 #include <malloc.h>
 #include <memory.h>
 #include <ctype.h>
+#include <stdlib.h>
 #include "header.h"
 
 
@@ -62,7 +63,7 @@ void readFile(char * filename){
 
 
 
-    for(int i = 0; i < 2; i++){
+    for(int i = 0; i < 3; i++){
        checkNode(*(dataValue+i));
     }
 }
@@ -78,6 +79,8 @@ void checkNode(char * splitString){
 
         while(ph != NULL) {
 
+
+
             int index = 0;
 
             if(strcmp(ph, "=") == 0){
@@ -89,9 +92,10 @@ void checkNode(char * splitString){
                 conducter->pszString = calloc(1,sizeof(ph));
                 strcpy(conducter->pszString, ph);
                 printf("Value: %s has now been placed in %s-Node", ph, conducter->pszName);
-
                 break;
             }
+
+
 
             while (index < MAX_NODE){
 
@@ -122,12 +126,6 @@ void checkNode(char * splitString){
                 index++;
             }
 
-
-
-
-
-
-
             ph = strtok(NULL, "\". ");
         }
     }
@@ -151,7 +149,7 @@ Node * createSubNode(Node * parentNode, char * string){
         if(parentNode->pnNodes[index] == NULL){
             printf("Will now create %s-node for the first time\n", string);
             Node * subnode = calloc(1,sizeof(Node));
-            subnode->pszName = malloc(sizeof(strlen(string))+1);
+            subnode->pszName = malloc(sizeof(string));
             strcpy(subnode->pszName, string);
             subnode->pszName[sizeof(string)] = '\0';
             parentNode->pnNodes[index] = subnode;
@@ -174,5 +172,9 @@ int main(void) {
     char * filename = "file.txt";
     readFile(filename);
 
+    //TODO BUTTON_CANCEL PROBLEM.. Legger kun BUTTON_C og ikke hele stringen. Problemet skjer i createSubNode fun
+    //TODO ETTER DU ER FERDIG MED DETTE HUSK Å FIKS EN IF STATEMENT FOR TALL VERDI...
+    //TODO ETTER DU ER FERDIG MED DETTE, LAG EN OPTIMALISERT BUBBLESORT FUNC SOM sorterer tekstarryaet..
+    
     return 0;
 }
