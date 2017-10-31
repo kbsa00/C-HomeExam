@@ -62,7 +62,7 @@ void readFile(char * filename){
 
 
 
-    for(int i = 0; i < 1; i++){
+    for(int i = 0; i < 2; i++){
        checkNode(*(dataValue+i));
     }
 }
@@ -79,6 +79,7 @@ void checkNode(char * splitString){
         while(ph != NULL) {
 
             int index = 0;
+
             if(strcmp(ph, "=") == 0){
                 ph = strtok(NULL,"=");
             }
@@ -97,29 +98,31 @@ void checkNode(char * splitString){
                 if(conducter->pnNodes[index] != NULL){
 
                     if(strcmp(conducter->pnNodes[index]->pszName, ph) == 0){
-                    printf("Node is already created: %s\n", conducter->pnNodes[index]->pszName);
-                    conducter = conducter->pnNodes[index];
+                        printf("Node is already created: %s\n", conducter->pnNodes[index]->pszName);
+                        conducter = conducter->pnNodes[index];
+                        break;
 
                     }
 
                 }
                 else if(conducter->pnNodes[index] == NULL){
                     conducter = createSubNode(conducter, ph);
+
+                    index = 0;
+                    while(index < MAX_NODE){
+                        if(strcmp(conducter->pnNodes[index]->pszName, ph) == 0){
+                            conducter = conducter->pnNodes[index];
+                            printf("%s-node was succesfully created\n",conducter->pszName);
+                            break;
+                        }
+                        index++;
+                    }
                     break;
                 }
                 index++;
             }
 
-                index = 0;
-                while(index < MAX_NODE){
 
-                if(strcmp(conducter->pnNodes[index]->pszName, ph) == 0){
-                    conducter = conducter->pnNodes[index];
-                    printf("%s-node was succesfully created\n",conducter->pszName);
-                    break;
-                }
-                index++;
-            }
 
 
 
@@ -171,78 +174,5 @@ int main(void) {
     char * filename = "file.txt";
     readFile(filename);
 
-/*    if(conducter != NULL){
-
-        int index = 0;
-        int counter = 0;
-        char * ph = strtok(splitString,". =");
-
-        while(ph != NULL) {
-
-            for (int i = 0; i < MAX_NODE; i++) {
-
-                if (conducter->pnNodes[i] == NULL) {
-                    counter++;
-                }
-                else if (conducter->pnNodes[i] != NULL) {
-                    conducter = conducter->pnNodes[i];
-
-                    if (strcmp(conducter->pszName, splitString) == 0) {
-
-                        printf("\nAlready created node: %s", conducter->pszName);
-
-                        int co = 0;
-
-                        counter = 0;
-                        while (co < MAX_NODE) {
-
-                            if (conducter->pnNodes[co] != NULL) {
-                                conducter = conducter->pnNodes[co];
-
-                                if (strcmp(conducter->pszName, ph) == 0) {
-                                    conducter = subnode;
-                                }
-                                else {
-                                    printf("\nCreating new node: %s", ph);
-                                    int co = 0;
-                                    subnode->pszName = ph;
-                                    conducter->pnNodes[co] = subnode;
-                                    conducter = subnode;
-                                }
-                            }
-                            else if(conducter->pnNodes[co] == NULL){
-                                counter++;
-                            }
-
-                            co++;
-                        }
-                    }
-                    else {
-                        //TODO: HUSK Å SETT HEADER SIN VERDI SOM OPPDATERING HER INNE.....
-                        printf("\n\n%s", ph);
-                    }
-
-                }
-                else if (isdigit(ph)) {
-                    conducter->ulIntval = (ULONG) ph;
-                    conducter = root;
-                }
-
-            }
-
-            if (counter == MAX_NODE) {
-                printf("Creating new node for the first time: %s", ph);
-                subnode->pszName = ph;
-                conducter->pnNodes[index] = subnode;
-
-            }
-
-            ph = strtok(NULL, ". =");
-        }
-    }
-
-    else{
-        printf("Conducter == NULL, Something went wrong with root");
-    }*/
     return 0;
 }
