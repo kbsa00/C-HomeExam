@@ -7,7 +7,7 @@
 
 #define MAX_NODE  10
 
-typedef unsigned long ULONG;
+typedef unsigned ULONG;
 
 
 typedef struct _NODE{

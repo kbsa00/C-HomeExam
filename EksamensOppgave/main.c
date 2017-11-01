@@ -63,9 +63,13 @@ void readFile(char * filename){
 
 
 
-    for(int i = 0; i < 3; i++){
+    for(int i = 0; i < counterLines; i++){
        checkNode(*(dataValue+i));
     }
+}
+
+void sortAlphabetical(char * array[]){
+    
 }
 
 void checkNode(char * splitString){
@@ -79,8 +83,6 @@ void checkNode(char * splitString){
 
         while(ph != NULL) {
 
-
-
             int index = 0;
 
             if(strcmp(ph, "=") == 0){
@@ -93,6 +95,16 @@ void checkNode(char * splitString){
                 strcpy(conducter->pszString, ph);
                 printf("Value: %s has now been placed in %s-Node", ph, conducter->pszName);
                 break;
+            } else{
+                ULONG a;
+                a = (ULONG) atoi(ph);
+
+                if(a > 0){
+                    conducter->ulIntval = a;
+                    printf("Value: %d has now been placed in %s-Node", a, conducter->pszName);
+                    break;
+                }
+
             }
 
 
@@ -149,9 +161,9 @@ Node * createSubNode(Node * parentNode, char * string){
         if(parentNode->pnNodes[index] == NULL){
             printf("Will now create %s-node for the first time\n", string);
             Node * subnode = calloc(1,sizeof(Node));
-            subnode->pszName = malloc(sizeof(string));
+            subnode->pszName = malloc(sizeof(string)+1);
             strcpy(subnode->pszName, string);
-            subnode->pszName[sizeof(string)] = '\0';
+            //subnode->pszName[sizeof(string)] = '\0';
             parentNode->pnNodes[index] = subnode;
             printf("Has now created %s-node and puts in %s-node\n", subnode->pszName, parentNode->pszName);
             return parentNode;
@@ -172,8 +184,7 @@ int main(void) {
     char * filename = "file.txt";
     readFile(filename);
 
-    //TODO BUTTON_CANCEL PROBLEM.. Legger kun BUTTON_C og ikke hele stringen. Problemet skjer i createSubNode fun
-    //TODO ETTER DU ER FERDIG MED DETTE HUSK Å FIKS EN IF STATEMENT FOR TALL VERDI...
+
     //TODO ETTER DU ER FERDIG MED DETTE, LAG EN OPTIMALISERT BUBBLESORT FUNC SOM sorterer tekstarryaet..
     
     return 0;
