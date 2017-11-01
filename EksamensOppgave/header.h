@@ -7,7 +7,7 @@
 
 #define MAX_NODE  10
 
-typedef unsigned ULONG;
+typedef unsigned long ULONG;
 
 
 typedef struct _NODE{
@@ -18,17 +18,17 @@ typedef struct _NODE{
 
 }Node;
 
+Node * root;
 
 void readFile(char * filename);
-
-void setINT(int number);
 void setString(char * string);
 int getINT();
 char getString();
 void Delete();
 void Enumerate();
-void sortAlphabetical(char * array[]);
-
+void sortAlphabetical(char * textFile[], int size);
+void checkNode(char * textline);
+Node * createSubNode(Node * parentNode, char * string);
 
 //getValue og setValue.. Finn ut hvilken datatype, som
 //skal sendes og returneres..

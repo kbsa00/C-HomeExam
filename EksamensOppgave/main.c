@@ -1,85 +1,19 @@
 #include <stdio.h>
 #include <malloc.h>
 #include <memory.h>
-#include <ctype.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include "header.h"
 
 
-void checkNode(char * splitString);
-Node * createSubNode(Node * parentNode, char * string);
 
-
-Node * root;
-
-void readFile(char * filename){
-
-    FILE * fp;
-    fp = fopen(filename, "r");
-    int line;
-    int counterLines = 0;
-
-    if(fp != NULL){
-        while(!feof(fp)){
-            line = fgetc(fp);
-
-            if(line == '\n'){
-                counterLines++;
-            }
-        }
-    }
-    else{
-        printf("ERROR: Can't read file");
-    }
-
-    rewind(fp);
-
-    long size;
-    fseek(fp, 0, SEEK_END);
-    size = ftell(fp);
-    rewind(fp);
-    fclose(fp);
-
-    FILE * fpointer;
-    fpointer = fopen(filename, "r");
-
-    char readline[size];
-    char * dataValue[counterLines];
-
-    int index = 0 ;
-
-    if(fpointer != NULL) {
-
-        while(fgets(readline, sizeof(readline),fpointer) != NULL){
-            dataValue[index] = malloc(sizeof(readline));
-            strcpy(dataValue[index], readline);
-            index++;
-        }
-    }
-    else{
-        printf("ERROR");
-    }
-    fclose(fpointer);
-
-
-
-    for(int i = 0; i < counterLines; i++){
-       checkNode(*(dataValue+i));
-    }
-}
-
-void sortAlphabetical(char * array[]){
-    
-}
-
-void checkNode(char * splitString){
+void checkNode(char * textline){
 
     Node * conducter = root;
 
-
     if(conducter != NULL){
 
-        char * ph = strtok(splitString,"\". ");
+        char * ph = strtok(textline,"\". ");
 
         while(ph != NULL) {
 
@@ -93,18 +27,18 @@ void checkNode(char * splitString){
                 ph = strtok(ph, "\"");
                 conducter->pszString = calloc(1,sizeof(ph));
                 strcpy(conducter->pszString, ph);
-                printf("Value: %s has now been placed in %s-Node", ph, conducter->pszName);
+                printf("Value: %s has now been placed in %s-Node", conducter->pszString, conducter->pszName);
                 break;
             } else{
+
                 ULONG a;
                 a = (ULONG) atoi(ph);
 
                 if(a > 0){
                     conducter->ulIntval = a;
-                    printf("Value: %d has now been placed in %s-Node", a, conducter->pszName);
+                    printf("Value: %lu has now been placed in %s-Node", conducter->ulIntval, conducter->pszName);
                     break;
                 }
-
             }
 
 
@@ -153,7 +87,6 @@ void checkNode(char * splitString){
 
 Node * createSubNode(Node * parentNode, char * string){
 
-
     int index = 0;
 
     while(index < MAX_NODE){
@@ -163,9 +96,7 @@ Node * createSubNode(Node * parentNode, char * string){
             Node * subnode = calloc(1,sizeof(Node));
             subnode->pszName = malloc(sizeof(string)+1);
             strcpy(subnode->pszName, string);
-            //subnode->pszName[sizeof(string)] = '\0';
             parentNode->pnNodes[index] = subnode;
-            printf("Has now created %s-node and puts in %s-node\n", subnode->pszName, parentNode->pszName);
             return parentNode;
         }
 
@@ -176,6 +107,42 @@ Node * createSubNode(Node * parentNode, char * string){
     return 0;
 }
 
+void printAll(Node * this){
+
+    int index = 0;
+
+
+
+    while(index < 6){
+
+        if(this->pnNodes[index] != NULL){
+            printf("%s.", this->pnNodes[index]->pszName);
+            this = this->pnNodes[index];
+            index = 0;
+
+        }
+
+        index++;
+    }
+
+
+   if(this->pnNodes[index] == NULL) {
+
+       if(this->pszString == NULL){
+           printf(" = %lu", this->ulIntval);
+       } else{
+           printf(" = %s", this->pszString);
+       }
+
+
+       printf("\nEverything was printed out..\n");
+   } else{
+       printAll(this);
+   }
+
+}
+
+
 
 int main(void) {
     root = malloc(sizeof(Node));
@@ -184,8 +151,8 @@ int main(void) {
     char * filename = "file.txt";
     readFile(filename);
 
+    printAll(root);
 
-    //TODO ETTER DU ER FERDIG MED DETTE, LAG EN OPTIMALISERT BUBBLESORT FUNC SOM sorterer tekstarryaet..
     
     return 0;
 }

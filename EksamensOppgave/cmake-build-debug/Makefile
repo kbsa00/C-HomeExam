@@ -123,6 +123,33 @@ EksamensOppgave/fast:
 	$(MAKE) -f CMakeFiles/EksamensOppgave.dir/build.make CMakeFiles/EksamensOppgave.dir/build
 .PHONY : EksamensOppgave/fast
 
+functions.o: functions.c.o
+
+.PHONY : functions.o
+
+# target to build an object file
+functions.c.o:
+	$(MAKE) -f CMakeFiles/EksamensOppgave.dir/build.make CMakeFiles/EksamensOppgave.dir/functions.c.o
+.PHONY : functions.c.o
+
+functions.i: functions.c.i
+
+.PHONY : functions.i
+
+# target to preprocess a source file
+functions.c.i:
+	$(MAKE) -f CMakeFiles/EksamensOppgave.dir/build.make CMakeFiles/EksamensOppgave.dir/functions.c.i
+.PHONY : functions.c.i
+
+functions.s: functions.c.s
+
+.PHONY : functions.s
+
+# target to generate assembly for a file
+functions.c.s:
+	$(MAKE) -f CMakeFiles/EksamensOppgave.dir/build.make CMakeFiles/EksamensOppgave.dir/functions.c.s
+.PHONY : functions.c.s
+
 main.o: main.c.o
 
 .PHONY : main.o
@@ -159,6 +186,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... EksamensOppgave"
+	@echo "... functions.o"
+	@echo "... functions.i"
+	@echo "... functions.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

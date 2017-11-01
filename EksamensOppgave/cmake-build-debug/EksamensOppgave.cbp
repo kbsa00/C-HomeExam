@@ -84,6 +84,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/khalid/Desktop/Eksamensoppgave/EksamensOppgave/functions.c">
+			<Option target="EksamensOppgave"/>
+		</Unit>
 		<Unit filename="/home/khalid/Desktop/Eksamensoppgave/EksamensOppgave/header.h">
 			<Option target="EksamensOppgave"/>
 		</Unit>

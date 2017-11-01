@@ -6,6 +6,20 @@
 
 #IncludeRegexTransform: 
 
+/home/khalid/Desktop/Eksamensoppgave/EksamensOppgave/functions.c
+header.h
+/home/khalid/Desktop/Eksamensoppgave/EksamensOppgave/header.h
+stdio.h
+-
+malloc.h
+-
+memory.h
+-
+stdlib.h
+-
+stdbool.h
+-
+
 /home/khalid/Desktop/Eksamensoppgave/EksamensOppgave/header.h
 
 /home/khalid/Desktop/Eksamensoppgave/EksamensOppgave/main.c
@@ -15,9 +29,9 @@ malloc.h
 -
 memory.h
 -
-ctype.h
--
 stdlib.h
+-
+ctype.h
 -
 header.h
 /home/khalid/Desktop/Eksamensoppgave/EksamensOppgave/header.h

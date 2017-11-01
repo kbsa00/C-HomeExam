@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/EksamensOppgave.dir/main.c.o"
+  "CMakeFiles/EksamensOppgave.dir/functions.c.o"
   "EksamensOppgave.pdb"
   "EksamensOppgave"
 )
