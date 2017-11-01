@@ -103,42 +103,35 @@ Node * createSubNode(Node * parentNode, char * string){
         index++;
     }
 
-
     return 0;
 }
 
-void printAll(Node * this){
-
-    int index = 0;
+void printAll(Node * this, char * folder){
 
 
+    char * pfolder = (char) malloc(sizeof(strlen(folder)+1));
 
-    while(index < 6){
 
-        if(this->pnNodes[index] != NULL){
-            printf("%s.", this->pnNodes[index]->pszName);
-            this = this->pnNodes[index];
-            index = 0;
+    for(int i = 0; i < MAX_NODE; i++){
 
+        if(this->pnNodes[i] != NULL){
+            folder = (char) realloc(pfolder, sizeof(this->pnNodes[i]->pszName));
+            strcat(folder, ".");
+            strcpy(pfolder, this->pnNodes[i]->pszName);
+            printAll(this->pnNodes[i], pfolder);
         }
 
-        index++;
+
+    }
+
+    if(this->pszString != NULL){
+        printf("%s = %s", folder, this->pszString);
+    }
+    else{
+        printf("%s = %lu", folder, this->ulIntval);
     }
 
 
-   if(this->pnNodes[index] == NULL) {
-
-       if(this->pszString == NULL){
-           printf(" = %lu", this->ulIntval);
-       } else{
-           printf(" = %s", this->pszString);
-       }
-
-
-       printf("\nEverything was printed out..\n");
-   } else{
-       printAll(this);
-   }
 
 }
 
@@ -151,7 +144,7 @@ int main(void) {
     char * filename = "file.txt";
     readFile(filename);
 
-    printAll(root);
+    printAll(root, root->pszName);
 
     
     return 0;
