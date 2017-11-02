@@ -56,7 +56,7 @@ void readFile(char * filename){
     }
     fclose(fpointer);
 
-    sortAlphabetical(dataValue, counterLines);
+   // sortAlphabetical(dataValue, counterLines);
 
 
     for(int i = 0; i < counterLines; i++){

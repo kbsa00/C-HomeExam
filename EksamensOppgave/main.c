@@ -2,7 +2,6 @@
 #include <malloc.h>
 #include <memory.h>
 #include <stdlib.h>
-#include <ctype.h>
 #include "header.h"
 
 
@@ -51,7 +50,6 @@ void checkNode(char * textline){
                         printf("Node is already created: %s\n", conducter->pnNodes[index]->pszName);
                         conducter = conducter->pnNodes[index];
                         break;
-
                     }
 
                 }
@@ -78,6 +76,7 @@ void checkNode(char * textline){
 
     else{
         printf("Conducter == NULL, Something went wrong with root");
+        exit(0);
     }
 
     printf("\n\n");
@@ -106,31 +105,73 @@ Node * createSubNode(Node * parentNode, char * string){
     return 0;
 }
 
-void printAll(Node * this, char * folder){
+void printAll(Node * current, char * folder) {
 
+   /* char *  pfolder = malloc(sizeof(char) + strlen(folder + 2));
 
-    char * pfolder = (char) malloc(sizeof(strlen(folder)+1));
+    for (int i = 0; i < MAX_NODE ; i++){
 
-
-    for(int i = 0; i < MAX_NODE; i++){
-
-        if(this->pnNodes[i] != NULL){
-            folder = (char) realloc(pfolder, sizeof(this->pnNodes[i]->pszName));
-            strcat(folder, ".");
-            strcpy(pfolder, this->pnNodes[i]->pszName);
-            printAll(this->pnNodes[i], pfolder);
+        if(current->pnNodes[i] != NULL){
+            strcpy(pfolder, folder);
+            pfolder = realloc(pfolder,sizeof(char) * strlen(folder) + strlen(current->pnNodes[i]->pszName + 2));
+            strcat(pfolder, ".");
+            strcat(pfolder, current->pnNodes[i]->pszName);
+            printAll(current->pnNodes[i], pfolder);
         }
-
-
     }
 
-    if(this->pszString != NULL){
-        printf("%s = %s", folder, this->pszString);
-    }
-    else{
-        printf("%s = %lu", folder, this->ulIntval);
-    }
+    if(current->pnNodes[0] == NULL){
 
+        if(current->pszString != NULL){
+            printf("%s = %s.", folder, (current->pszString));
+            printf("\n");
+        }
+        else{
+            printf("%s = %lu", folder, current->ulIntval);
+            printf("\n");
+        }
+    }*/
+}
+
+
+
+void GetType(char * string){
+
+    Node * conducter = root;
+
+    if(conducter != NULL) {
+
+    char *del = ".";
+        char * token = strtok(string, del);
+
+        while (token != NULL) {
+
+            int index = 0;
+
+            do{
+
+                if(strcmp(conducter->pnNodes[index]->pszName, token) == 0){
+                    conducter = conducter->pnNodes[index];
+                    break;
+                }
+
+                index++;
+            }while(index < MAX_NODE);
+
+
+            if(conducter->pszString !=  NULL){
+                printf("Mappen inneholder en %s mer spesifikt: %s", stringValue, conducter->pszString);
+            }
+            else if(conducter->ulIntval != 0){
+                printf("Mappen inneholder en %s, mer spesifikt: %lu", intvalue, conducter->ulIntval);
+            }
+
+            token = strtok(NULL, del);
+            }
+    }else{
+        printf("Noe gikk galt med Root");
+        exit(0);
+    }
 
 
 }
@@ -143,9 +184,69 @@ int main(void) {
 
     char * filename = "file.txt";
     readFile(filename);
+    char string[40] = "config.update.interval";
 
-    printAll(root, root->pszName);
+    GetType(string);
 
-    
+
+
+    /*char *pfolder;
+    pfolder = malloc(sizeof(char) * sizeof(strlen(folder) + 1));
+
+    int counter = 0;
+
+    for (int i = 0; i < MAX_NODE; i++) {
+
+        if (current->pnNodes[i] != NULL) {
+            strcpy(pfolder, folder);
+            pfolder = realloc(pfolder, sizeof(char) * sizeof(strlen(pfolder) + sizeof(current->pnNodes[i]->pszName + 1)));
+            strcat(pfolder, ".");
+            strcat(pfolder, current->pnNodes[i]->pszName);
+            printAll(current->pnNodes[i], pfolder);
+        } else{
+
+            counter++;
+        }
+    }
+
+    if (counter == MAX_NODE) {
+
+        if (current->pszString != NULL) {
+
+            printf("%s = %s", folder, current->pszString);
+            printf("\n");
+
+
+        } else if (current->ulIntval > 0) {
+            printf("%s = %lu", folder, current->ulIntval);
+            printf("\n");
+        }
+    }*/
+
+
+   /* while (token != NULL) {
+        int counter = 0;
+        int index = 0;
+
+        while(index < MAX_NODE){
+
+            if(strcmp(conducter->pnNodes[index]->pszName, token) == 0){
+                conducter = conducter->pnNodes[index];
+                break;
+            }
+
+            index++;
+        }
+
+        if(conducter->pszString != NULL){
+            printf("\nNøkkel verdien du sendte inn inneholder %s mer spesifikt %s", stringValue, conducter->pszString);
+        }
+        else if(conducter->ulIntval != 0){
+            printf("\nNøkkel verdien du sendte inn inneholder %s mer spesifikt tallet %lu", intvalue, conducter->ulIntval);
+        }
+
+
+        token = strtok(NULL, del);
+    }*/
     return 0;
 }

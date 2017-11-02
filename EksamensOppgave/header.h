@@ -6,7 +6,9 @@
 #define EKSAMENSOPPGAVE_HEADER_H
 
 #define MAX_NODE  10
-
+#define intvalue "Integer Value"
+#define stringValue "String Value"
+#define feilkode "Finner ikke katalogen"
 typedef unsigned long ULONG;
 
 
@@ -21,14 +23,11 @@ typedef struct _NODE{
 Node * root;
 
 void readFile(char * filename);
-void setString(char * string);
-int getINT();
-char getString();
-void Delete();
-void Enumerate();
 void sortAlphabetical(char * textFile[], int size);
 void checkNode(char * textline);
 Node * createSubNode(Node * parentNode, char * string);
+void printAll(Node * current, char * folder);
+void GetType(char * string);
 
 //getValue og setValue.. Finn ut hvilken datatype, som
 //skal sendes og returneres..
