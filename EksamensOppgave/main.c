@@ -3,7 +3,7 @@
 #include <memory.h>
 #include <stdlib.h>
 #include "header.h"
-
+#include <stdbool.h>
 
 
 void checkNode(char * textline){
@@ -105,34 +105,6 @@ Node * createSubNode(Node * parentNode, char * string){
     return 0;
 }
 
-void printAll(Node * current, char * folder) {
-
-   /* char *  pfolder = malloc(sizeof(char) + strlen(folder + 2));
-
-    for (int i = 0; i < MAX_NODE ; i++){
-
-        if(current->pnNodes[i] != NULL){
-            strcpy(pfolder, folder);
-            pfolder = realloc(pfolder,sizeof(char) * strlen(folder) + strlen(current->pnNodes[i]->pszName + 2));
-            strcat(pfolder, ".");
-            strcat(pfolder, current->pnNodes[i]->pszName);
-            printAll(current->pnNodes[i], pfolder);
-        }
-    }
-
-    if(current->pnNodes[0] == NULL){
-
-        if(current->pszString != NULL){
-            printf("%s = %s.", folder, (current->pszString));
-            printf("\n");
-        }
-        else{
-            printf("%s = %lu", folder, current->ulIntval);
-            printf("\n");
-        }
-    }*/
-}
-
 
 
 void GetType(char * string){
@@ -192,30 +164,116 @@ void GetType(char * string){
 }
 
 
-void GetString(Node * current){
+ char * GetString(Node * current){
 
     if(current->pszName != NULL){
-        printf("Nodens verdi er: %s\n", current->pszString);
-        //returner noe..
+
+        return current->pszString;
     }
     else{
         printf("ERROR: %s\n", fDatatype);
     }
 
+    return 0;
+}
+
+void Delete(char * string ){
+
+    Node * conducter = root;
+    Node * subnode;
+
+    if(conducter != NULL){
+
+        char string1[50];
+        strcpy(string1,string);
+        subnode = GetCurrentNode(string1);
+
+        if(subnode->pszString == NULL && subnode->ulIntval == 0){
+
+            for(int i = 0; i < MAX_NODE; i++){
+                free(subnode->pnNodes[i]);
+                subnode->pnNodes[i] = NULL;
+            }
+
+        }
+        else if(subnode->pszString != NULL || subnode->ulIntval != 0){
+            subnode->pszString = NULL;
+            free(subnode->pszString);
+            free(subnode);
+
+        }
+        rekursiv(conducter);
+    }
+    else{
+        printf("Noe gikk galt med Root\n");
+        exit(0);
+    }
+
+
 }
 
 
-void GetInt(Node * current){
+void rekursiv(Node * current){
+
+    for(int i = 0; i < MAX_NODE; i++){
+
+        if(current->pnNodes[i] == NULL && current->pszString != NULL && current->ulIntval == 0){
+            free(current);
+        }
+
+
+        current = root;
+        rekursiv(current);
+    }
+
+
+}
+
+void printAll(Node * current, char * folder) {
+
+   /*  char *  pfolder = malloc(sizeof(char) + strlen(folder + 2));
+
+     for (int i = 0; i < MAX_NODE ; i++){
+
+         if(current->pnNodes[i] != NULL){
+             strcpy(pfolder, folder);
+             pfolder = realloc(pfolder,sizeof(char) * strlen(folder) + strlen(current->pnNodes[i]->pszName + 2));
+             strcat(pfolder, ".");
+             strcat(pfolder, current->pnNodes[i]->pszName);
+             printAll(current->pnNodes[i], pfolder);
+         }
+     }
+
+
+     if(current->pnNodes[0] == NULL){
+
+         if(current->pszString != NULL){
+             printf("%s = %s.", folder, (current->pszString));
+             printf("\n");
+         }
+         else{
+             printf("%s = %lu", folder, current->ulIntval);
+             printf("\n");
+         }
+     }*/
+}
+
+
+
+ULONG GetULONG(Node * current){
 
     if(current->pszName == NULL){
         printf("ERROR: %s\n", fDatatype);
-        //returner noe..?
     }
     else{
-        printf("Nodens verdi er: %s\n", current->pszString);
+
+        return current->ulIntval;
     }
 
+    return 1;
 }
+
+
 
 int main(void) {
     root = malloc(sizeof(Node));
@@ -224,12 +282,10 @@ int main(void) {
     char * filename = "file.txt";
     readFile(filename);
 
-    Node * node;
-
-    char test[40] = "config.loglevel";
-    node = GetCurrentNode(test);
-
-    GetInt(node);
+    Delete("strings.no.header");
+    Node * ro = root;
+    printf("test");
+   // printAll(root, root->pszName);
 
     return 0;
 }

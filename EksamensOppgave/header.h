@@ -31,8 +31,10 @@ Node * createSubNode(Node * parentNode, char * string);
 void printAll(Node * current, char * folder);
 void GetType(char * string);
 Node * GetCurrentNode(char * string);
-void GetInt(Node * current);
-
+ULONG GetULONG(Node * current);
+char * GetString(Node * current);
+void GetText(char * undernode, char * hovednode);
+void rekursiv(Node * current);
 //getValue og setValue.. Finn ut hvilken datatype, som
 //skal sendes og returneres..
 
