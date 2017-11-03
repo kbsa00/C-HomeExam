@@ -56,7 +56,7 @@ void readFile(char * filename){
     }
     fclose(fpointer);
 
-   // sortAlphabetical(dataValue, counterLines);
+    sortAlphabetical(dataValue, counterLines);
 
 
     for(int i = 0; i < counterLines; i++){
@@ -92,4 +92,51 @@ void sortAlphabetical(char * textFile[], int size){
     }
 }
 
+
+Node * GetCurrentNode(char * string){
+
+    Node * conducter = root;
+
+    if(conducter != NULL){
+        char * token = strtok(string, ".");
+
+        while(token != NULL){
+
+            int index = 0;
+            int counter = 0;
+
+            do {
+
+                if(conducter->pnNodes[index] != NULL){
+                    counter++;
+                    if (strcmp(conducter->pnNodes[index]->pszName, token) == 0) {
+                        conducter = conducter->pnNodes[index];
+                        break;
+                    }
+                }
+                else{
+                    counter++;
+                }
+
+
+                index++;
+
+            } while (index < MAX_NODE);
+
+            if(counter == MAX_NODE){
+                printf("ERROR: %s\n", feilkode);
+                printf("Avslutter programmet...");
+                exit(0);
+            }
+
+            token = strtok(NULL, ".");
+        }
+
+        return conducter;
+
+    } else{
+        printf("Noe gikk galt med Root..");
+        exit(0);
+    }
+}
 

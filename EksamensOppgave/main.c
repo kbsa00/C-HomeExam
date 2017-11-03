@@ -141,42 +141,81 @@ void GetType(char * string){
 
     if(conducter != NULL) {
 
-    char *del = ".";
-        char * token = strtok(string, del);
+        char *del = ".";
+        char *token = strtok(string, del);
 
         while (token != NULL) {
 
-            int index = 0;
+            while (token != NULL) {
 
-            do{
+                int index = 0;
+                int counter = 0;
 
-                if(strcmp(conducter->pnNodes[index]->pszName, token) == 0){
-                    conducter = conducter->pnNodes[index];
-                    break;
+                do {
+
+                    if(conducter->pnNodes[index] != NULL){
+                        counter++;
+                        if (strcmp(conducter->pnNodes[index]->pszName, token) == 0) {
+                        conducter = conducter->pnNodes[index];
+
+                        if (conducter->pszString != NULL) {
+                            printf("Mappen inneholder en %s mer spesifikt: %s\n", stringValue, conducter->pszString);
+                        } else if (conducter->ulIntval != 0) {
+                            printf("Mappen inneholder en %s, mer spesifikt: %lu\n", intvalue, conducter->ulIntval);
+                        }
+                        break;
+                        }
+                    }
+                    else{
+                        counter++;
+                    }
+
+
+                    index++;
+
+                } while (index < MAX_NODE);
+
+
+                if(counter == MAX_NODE){
+                    printf("ERROR: %s\n",feilkode);
                 }
 
-                index++;
-            }while(index < MAX_NODE);
 
 
-            if(conducter->pszString !=  NULL){
-                printf("Mappen inneholder en %s mer spesifikt: %s", stringValue, conducter->pszString);
+                token = strtok(NULL, del);
             }
-            else if(conducter->ulIntval != 0){
-                printf("Mappen inneholder en %s, mer spesifikt: %lu", intvalue, conducter->ulIntval);
-            }
-
-            token = strtok(NULL, del);
-            }
+        }
     }else{
         printf("Noe gikk galt med Root");
         exit(0);
     }
+}
 
+
+void GetString(Node * current){
+
+    if(current->pszName != NULL){
+        printf("Nodens verdi er: %s\n", current->pszString);
+        //returner noe..
+    }
+    else{
+        printf("ERROR: %s\n", fDatatype);
+    }
 
 }
 
 
+void GetInt(Node * current){
+
+    if(current->pszName == NULL){
+        printf("ERROR: %s\n", fDatatype);
+        //returner noe..?
+    }
+    else{
+        printf("Nodens verdi er: %s\n", current->pszString);
+    }
+
+}
 
 int main(void) {
     root = malloc(sizeof(Node));
@@ -184,69 +223,13 @@ int main(void) {
 
     char * filename = "file.txt";
     readFile(filename);
-    char string[40] = "config.update.interval";
 
-    GetType(string);
+    Node * node;
 
+    char test[40] = "config.loglevel";
+    node = GetCurrentNode(test);
 
+    GetInt(node);
 
-    /*char *pfolder;
-    pfolder = malloc(sizeof(char) * sizeof(strlen(folder) + 1));
-
-    int counter = 0;
-
-    for (int i = 0; i < MAX_NODE; i++) {
-
-        if (current->pnNodes[i] != NULL) {
-            strcpy(pfolder, folder);
-            pfolder = realloc(pfolder, sizeof(char) * sizeof(strlen(pfolder) + sizeof(current->pnNodes[i]->pszName + 1)));
-            strcat(pfolder, ".");
-            strcat(pfolder, current->pnNodes[i]->pszName);
-            printAll(current->pnNodes[i], pfolder);
-        } else{
-
-            counter++;
-        }
-    }
-
-    if (counter == MAX_NODE) {
-
-        if (current->pszString != NULL) {
-
-            printf("%s = %s", folder, current->pszString);
-            printf("\n");
-
-
-        } else if (current->ulIntval > 0) {
-            printf("%s = %lu", folder, current->ulIntval);
-            printf("\n");
-        }
-    }*/
-
-
-   /* while (token != NULL) {
-        int counter = 0;
-        int index = 0;
-
-        while(index < MAX_NODE){
-
-            if(strcmp(conducter->pnNodes[index]->pszName, token) == 0){
-                conducter = conducter->pnNodes[index];
-                break;
-            }
-
-            index++;
-        }
-
-        if(conducter->pszString != NULL){
-            printf("\nNøkkel verdien du sendte inn inneholder %s mer spesifikt %s", stringValue, conducter->pszString);
-        }
-        else if(conducter->ulIntval != 0){
-            printf("\nNøkkel verdien du sendte inn inneholder %s mer spesifikt tallet %lu", intvalue, conducter->ulIntval);
-        }
-
-
-        token = strtok(NULL, del);
-    }*/
     return 0;
 }

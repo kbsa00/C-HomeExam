@@ -9,6 +9,8 @@
 #define intvalue "Integer Value"
 #define stringValue "String Value"
 #define feilkode "Finner ikke katalogen"
+#define fDatatype "Feil Datatype"
+#define type "er en Mappe"
 typedef unsigned long ULONG;
 
 
@@ -28,6 +30,8 @@ void checkNode(char * textline);
 Node * createSubNode(Node * parentNode, char * string);
 void printAll(Node * current, char * folder);
 void GetType(char * string);
+Node * GetCurrentNode(char * string);
+void GetInt(Node * current);
 
 //getValue og setValue.. Finn ut hvilken datatype, som
 //skal sendes og returneres..

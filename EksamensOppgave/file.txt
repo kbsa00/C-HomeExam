@@ -6,6 +6,6 @@ strings.en.text = "Update your software"
 strings.en.button_ok = "Ok"
 strings.en.button_cancel = "Cancel"
 config.loglevel = 1
-config.update.i = 32
+config.update.interval = 32
 config.update.server1 = "http://www.aspenberg.no/"
 config.update.timeout = 20
