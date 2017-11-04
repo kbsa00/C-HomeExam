@@ -5,6 +5,13 @@
 #include "header.h"
 #include <stdbool.h>
 
+/**
+ * checkNode tar høyde for å sjekke om Noden allerede finnes i B-Treet.
+ * Funksjonen setter også verdi for nodene. Om ikke en node finnes sender funksjonen
+ * til en createSubnode som lager nodene. Og dobbelt sjekker om nodene blir faktisk blir laget.
+ * Funksjonen printer også ut hele prossessen av å lage B-treet.
+ *
+ */
 
 void checkNode(char * textline){
 
@@ -82,7 +89,11 @@ void checkNode(char * textline){
     printf("\n\n");
 
 }
-
+/**
+ * Denne funksjonen er dedikert for å opprette Nodene og plasserer disse i et B-tree struktur.
+ * Funksjonen blir kalt på fra checkNode for hver gang en Node må lages. Og deretter
+ * returnerer den noden som den har laget.
+ */
 
 Node * createSubNode(Node * parentNode, char * string){
 
@@ -105,129 +116,271 @@ Node * createSubNode(Node * parentNode, char * string){
     return 0;
 }
 
+/**
+ * Funksjonen GetType tar i mot en key-value fra bruker og vil
+ * presentere for brukeren om hvilken type node dette er.
+ */
 
+void GetType(char * namenode){
+    Node * conducter;
+    char * name = calloc(1, sizeof(strlen(namenode)));
+    strcpy(name, namenode);
 
-void GetType(char * string){
+    //For å slippe å sjekke om noden finnes i denne funksjonen
+    //Kaller jeg på en GetcurrentNode funksjon som tar i mot en Key-Value
+    //Og søker etter denne noden, slik at vi slipper å søke etter den her og vil returnere noden til oss
+    //GetCurrentNode vil ta høyde for at brukeren kanskje har skrevet feil.
 
-    Node * conducter = root;
+    conducter = GetCurrentNode(name);
+
+    if(conducter != NULL){
+
+        if(conducter->pszString == NULL && conducter->ulIntval == 0){
+            printf("Nøkkelnavnet du sendte inn er en %s\n",Mappe);
+        }
+        else if(conducter->pszString != NULL){
+            printf("Nøkkelnavnet du sendte inn inneholder en %s\n",stringValue);
+        }
+        else if(conducter->ulIntval != 0){
+            printf("Nøkkelnavnet du sendte inn inneholder en %s\n", intvalue);
+        }
+
+    }else{
+        printf("Noe gikk galt med conducter");
+        exit(0);
+    }
+
+}
+
+/**
+ * GetString funksjonen tar i mot en Keyvalue fra brukeren og returner Nodens String verdi.
+ * I tillegg til at den tar høyde for at Noden ikke har en String verdi.
+ */
+ char * GetString(char * keyvalue){
+
+    Node * conducter;
+    char * namenode = calloc(1, sizeof(strlen(keyvalue)+1));
+    strcpy(namenode,keyvalue);
+
+    //Vi sender keyvalue til GetCurrentNode som returnerer noden om den finnes i treet.
+    //Hvis ikke så vil den returnere en feilmelding og avslutter programmet.
+
+    conducter = GetCurrentNode(namenode);
 
     if(conducter != NULL) {
 
-        char *del = ".";
-        char *token = strtok(string, del);
+        if (conducter->pszName != NULL) {
 
-        while (token != NULL) {
-
-            while (token != NULL) {
-
-                int index = 0;
-                int counter = 0;
-
-                do {
-
-                    if(conducter->pnNodes[index] != NULL){
-                        counter++;
-                        if (strcmp(conducter->pnNodes[index]->pszName, token) == 0) {
-                        conducter = conducter->pnNodes[index];
-
-                        if (conducter->pszString != NULL) {
-                            printf("Mappen inneholder en %s mer spesifikt: %s\n", stringValue, conducter->pszString);
-                        } else if (conducter->ulIntval != 0) {
-                            printf("Mappen inneholder en %s, mer spesifikt: %lu\n", intvalue, conducter->ulIntval);
-                        }
-                        break;
-                        }
-                    }
-                    else{
-                        counter++;
-                    }
-
-
-                    index++;
-
-                } while (index < MAX_NODE);
-
-
-                if(counter == MAX_NODE){
-                    printf("ERROR: %s\n",feilkode);
-                }
-
-
-
-                token = strtok(NULL, del);
-            }
+            return conducter->pszString;
         }
-    }else{
-        printf("Noe gikk galt med Root");
-        exit(0);
-    }
-}
-
-
- char * GetString(Node * current){
-
-    if(current->pszName != NULL){
-
-        return current->pszString;
+        else {
+            printf("ERROR: %s\n", fDatatype);
+        }
     }
     else{
-        printf("ERROR: %s\n", fDatatype);
+        printf("Noe gikk galt med Conducter");
+        exit(0);
     }
-
     return 0;
 }
 
-void Delete(char * string ){
+/**
+ * GetString funksjonen tar i mot en Keyvalue fra brukeren og returner Nodens ULONG verdi.
+ * I tillegg til at den tar høyde for at Noden ikke har en ULONG verdi.
+ */
+
+ULONG GetULONG(char * keyvalue){
+
+    Node * conducter;
+    char * namenode = calloc(1, sizeof(strlen(keyvalue)+1));
+    strcpy(namenode,keyvalue);
+
+    //Vi sender keyvalue til GetCurrentNode som returnerer noden om den finnes i treet.
+    //Hvis ikke så vil den returnere en feilmelding og avslutter programmet.
+
+    conducter = GetCurrentNode(namenode);
+
+    if(conducter != NULL) {
+
+        if (conducter->pszName == NULL) {
+            printf("ERROR: %s\n", fDatatype);
+        } else {
+
+            return conducter->ulIntval;
+        }
+    } else{
+        printf("Noe gikk galt med conducter");
+        exit(0);
+    }
+    return 1;
+}
+
+void Delete(char * string){
 
     Node * conducter = root;
     Node * subnode;
 
     if(conducter != NULL){
 
-        char string1[50];
-        strcpy(string1,string);
-        subnode = GetCurrentNode(string1);
+        char * keyvalue = calloc(1, sizeof(strlen(string))+1);
+        char * substring = malloc(sizeof(char) * sizeof(strlen(string+1)));
+        strcpy(keyvalue,string);
+        strcpy(substring, string);
+        subnode = GetCurrentNode(keyvalue);
+
 
         if(subnode->pszString == NULL && subnode->ulIntval == 0){
+            printf("Sletter mappe: %s \nSletter også alle undernoder i mappen..\n", subnode->pszName);
 
             for(int i = 0; i < MAX_NODE; i++){
                 free(subnode->pnNodes[i]);
                 subnode->pnNodes[i] = NULL;
             }
 
+            char * del = ".";
+            char * token = strtok(substring, del);
+            bool boolean = false;
+            while(token != NULL && boolean != true){
+
+                int index = 0;
+
+                while(index < MAX_NODE) {
+
+
+                    if (strcmp(conducter->pnNodes[index]->pszName, substring) == 0) {
+                        conducter = conducter->pnNodes[index];
+
+                        for(int i = 0; i < MAX_NODE; i++){
+
+                            if( strcmp(conducter->pnNodes[i]->pszName, subnode->pszName) == 0){
+                                free(conducter->pnNodes[i]);
+                                conducter->pnNodes[i] = NULL;
+                                boolean = true;
+                                printf("Mappen er nå SLETTET!\n");
+                                break;
+                            }
+
+                        }
+                        break;
+                    }
+
+                    index++;
+                }
+
+
+
+                token = strtok(NULL, del);
+
+            }
         }
         else if(subnode->pszString != NULL || subnode->ulIntval != 0){
-            subnode->pszString = NULL;
-            free(subnode->pszString);
-            free(subnode);
+            char * del = ".";
+            char * token = strtok(substring, del);
+
+            printf("Du vil slette %s-node med en verdi\n", subnode->pszName);
+
+            bool boolean = false;
+            while(token != NULL && boolean != true){
+
+                int index = 0;
+
+                while(index < MAX_NODE){
+
+                    if(strcmp(conducter->pnNodes[index]->pszName, token) == 0){
+                        conducter = conducter->pnNodes[index];
+                        break;
+                    }
+
+                    index++;
+                }
+
+
+                for(int i = 0; i < MAX_NODE; i++){
+
+                    if(conducter->pnNodes[i] != NULL) {
+                        int ret;
+
+                        ret = strncmp(conducter->pnNodes[i]->pszName, subnode->pszName, sizeof(strlen(subnode->pszName)));
+
+                        if (ret == 0){
+                            printf("Sletter nå %s\n", subnode->pszName);
+                            free(conducter->pnNodes[i]);
+                            conducter->pnNodes[i] = NULL;
+                            boolean = true;
+                            break;
+
+                        }
+                    }
+
+                }
+
+                token = strtok(NULL, del);
+            }
 
         }
-        rekursiv(conducter);
+
     }
     else{
         printf("Noe gikk galt med Root\n");
         exit(0);
     }
 
-
 }
 
 
-void rekursiv(Node * current){
 
-    for(int i = 0; i < MAX_NODE; i++){
+void checkDeletion(char * string, Node * conducter){
 
-        if(current->pnNodes[i] == NULL && current->pszString != NULL && current->ulIntval == 0){
-            free(current);
-        }
+    char * token = strtok(string, ".");
+
+    while(token != NULL){
+
+        /* int index = 0;
+         int counter = 0;
+         while(index < MAX_NODE){
+
+             if(conducter->pnNodes[index] == NULL) {
+                 counter++;
+             }
+             index++;
+         }
+
+         if(counter == MAX_NODE){
+             for(int i = 0; i < MAX_NODE; i++){
+
+                 if(strcmp(conducter->pnNodes[i]->pszString, token) == 0){
+                     printf("Sletter Node %s fordi den er en tom mappe uten undermapper", conducter->pnNodes[i]->pszName);
+                     conducter->pnNodes[i] = NULL;
+                     free(conducter->pnNodes[i]);
+                     break;
+                 }
+
+             }
+         }
+         else{
+              index = 0;
+             while(index < MAX_NODE){
+
+                 if(strcmp(conducter->pnNodes[index]->pszName, token) == 0){
+                     conducter = conducter->pnNodes[index];
+                     break;
+                 }
+
+                 index++;
+             }
+
+         }
+*/
 
 
-        current = root;
-        rekursiv(current);
+
+        puts(token);
+
+
+        token = strtok(NULL, ".");
     }
-
-
 }
+
 
 void printAll(Node * current, char * folder) {
 
@@ -259,22 +412,6 @@ void printAll(Node * current, char * folder) {
 }
 
 
-
-ULONG GetULONG(Node * current){
-
-    if(current->pszName == NULL){
-        printf("ERROR: %s\n", fDatatype);
-    }
-    else{
-
-        return current->ulIntval;
-    }
-
-    return 1;
-}
-
-
-
 int main(void) {
     root = malloc(sizeof(Node));
     root->pszName = "root";
@@ -282,10 +419,11 @@ int main(void) {
     char * filename = "file.txt";
     readFile(filename);
 
-    Delete("strings.no.header");
-    Node * ro = root;
-    printf("test");
+    Delete("strings.no.text");
+
+
    // printAll(root, root->pszName);
+
 
     return 0;
 }

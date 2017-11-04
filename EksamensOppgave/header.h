@@ -1,6 +1,4 @@
-//
-// Created by khalid on 26.10.17.
-//
+
 
 #ifndef EKSAMENSOPPGAVE_HEADER_H
 #define EKSAMENSOPPGAVE_HEADER_H
@@ -8,9 +6,11 @@
 #define MAX_NODE  10
 #define intvalue "Integer Value"
 #define stringValue "String Value"
+#define Mappe "Mappe"
 #define feilkode "Finner ikke katalogen"
 #define fDatatype "Feil Datatype"
-#define type "er en Mappe"
+
+
 typedef unsigned long ULONG;
 
 
@@ -24,6 +24,8 @@ typedef struct _NODE{
 
 Node * root;
 
+//Deklarasjon av alle funksjoner i programmet.
+
 void readFile(char * filename);
 void sortAlphabetical(char * textFile[], int size);
 void checkNode(char * textline);
@@ -31,12 +33,12 @@ Node * createSubNode(Node * parentNode, char * string);
 void printAll(Node * current, char * folder);
 void GetType(char * string);
 Node * GetCurrentNode(char * string);
-ULONG GetULONG(Node * current);
-char * GetString(Node * current);
+ULONG GetULONG(char * keyvalue);
+char * GetString(char * keyvalue);
 void GetText(char * undernode, char * hovednode);
-void rekursiv(Node * current);
-//getValue og setValue.. Finn ut hvilken datatype, som
-//skal sendes og returneres..
+void checkDeletion(char * string, Node * conducter);
+
+
 
 
 #endif //EKSAMENSOPPGAVE_HEADER_H
