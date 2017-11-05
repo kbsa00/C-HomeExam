@@ -36,7 +36,7 @@ Node * GetCurrentNode(char * string);
 ULONG GetULONG(char * keyvalue);
 char * GetString(char * keyvalue);
 void GetText(char * undernode, char * hovednode);
-void checkDeletion(char * string, Node * conducter);
+Node * rekursiv(Node * current, char * hovednode, char * undernod);
 
 
 

@@ -4,14 +4,18 @@
 #include <stdlib.h>
 #include "header.h"
 #include <stdbool.h>
+#include <setjmp.h>
 
 /**
  * checkNode tar høyde for å sjekke om Noden allerede finnes i B-Treet.
  * Funksjonen setter også verdi for nodene. Om ikke en node finnes sender funksjonen
- * til en createSubnode som lager nodene. Og dobbelt sjekker om nodene blir faktisk blir laget.
+ * til en createSubnode som lager nodene og returnerer dette.
+ * CheckNode vil så dobbelt sjekke om nodene blir faktisk laget.
  * Funksjonen printer også ut hele prossessen av å lage B-treet.
  *
  */
+
+jmp_buf env;
 
 void checkNode(char * textline){
 
@@ -169,7 +173,7 @@ void GetType(char * namenode){
 
     if(conducter != NULL) {
 
-        if (conducter->pszName != NULL) {
+        if (conducter->pszString != NULL) {
 
             return conducter->pszString;
         }
@@ -306,6 +310,7 @@ void Delete(char * string){
                             printf("Sletter nå %s\n", subnode->pszName);
                             free(conducter->pnNodes[i]);
                             conducter->pnNodes[i] = NULL;
+                            printf("SLETTET fra B-Treet!\n");
                             boolean = true;
                             break;
 
@@ -327,58 +332,70 @@ void Delete(char * string){
 
 }
 
+void GetText(char * undernode, char * hovednode){
+
+    Node * conducter;
+    conducter = root;
+
+    if(conducter != NULL){
+
+        conducter = rekursiv(conducter, hovednode, undernode);
+        if(!setjmp(env)) rekursiv(conducter,hovednode,undernode);
+        puts(conducter->pszString);
 
 
-void checkDeletion(char * string, Node * conducter){
-
-    char * token = strtok(string, ".");
-
-    while(token != NULL){
-
-        /* int index = 0;
-         int counter = 0;
-         while(index < MAX_NODE){
-
-             if(conducter->pnNodes[index] == NULL) {
-                 counter++;
-             }
-             index++;
-         }
-
-         if(counter == MAX_NODE){
-             for(int i = 0; i < MAX_NODE; i++){
-
-                 if(strcmp(conducter->pnNodes[i]->pszString, token) == 0){
-                     printf("Sletter Node %s fordi den er en tom mappe uten undermapper", conducter->pnNodes[i]->pszName);
-                     conducter->pnNodes[i] = NULL;
-                     free(conducter->pnNodes[i]);
-                     break;
-                 }
-
-             }
-         }
-         else{
-              index = 0;
-             while(index < MAX_NODE){
-
-                 if(strcmp(conducter->pnNodes[index]->pszName, token) == 0){
-                     conducter = conducter->pnNodes[index];
-                     break;
-                 }
-
-                 index++;
-             }
-
-         }
-*/
-
-
-
-        puts(token);
-
-
-        token = strtok(NULL, ".");
     }
+    else{
+        printf("Noe gikk galt med Conducter");
+
+    }
+
+
+
+}
+
+Node * rekursiv(Node * current, char * hovednode, char * undernode) {
+
+
+
+        int counter = 0;
+        for (int i = 0; i < MAX_NODE; i++) {
+
+            if (current->pnNodes[i] != NULL) {
+
+
+                if (strcmp(current->pszName, hovednode) == 0) {
+                    break;
+
+                }
+
+                rekursiv(current->pnNodes[i], hovednode, undernode);
+            }
+            counter++;
+        }
+
+        if (counter == 10) {
+
+            if (strcmp(current->pszName, undernode) == 0) {
+
+                return current;
+
+            }
+
+        }
+
+        if (current->pnNodes != NULL)
+            for (int i = 0; i < MAX_NODE; i++) {
+
+                if (strcmp(current->pnNodes[i]->pszName, undernode) == 0) {
+
+                    if(current->pnNodes[i])longjmp(env, 1);
+
+                }
+
+            }
+
+
 }
 
 
@@ -419,8 +436,7 @@ int main(void) {
     char * filename = "file.txt";
     readFile(filename);
 
-    Delete("strings.no.text");
-
+    GetText("text", "no");
 
    // printAll(root, root->pszName);
 
