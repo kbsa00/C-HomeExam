@@ -15,7 +15,7 @@
  *
  */
 
-jmp_buf env;
+int lol;
 
 void checkNode(char * textline){
 
@@ -339,9 +339,10 @@ void GetText(char * undernode, char * hovednode){
 
     if(conducter != NULL){
 
-        conducter = rekursiv(conducter, hovednode, undernode);
-        if(!setjmp(env)) rekursiv(conducter,hovednode,undernode);
-        puts(conducter->pszString);
+
+        conducter = rekursiv(conducter,hovednode,undernode);
+
+        puts(conducter->pszName);
 
 
     }
@@ -354,49 +355,68 @@ void GetText(char * undernode, char * hovednode){
 
 }
 
-Node * rekursiv(Node * current, char * hovednode, char * undernode) {
+Node * rekursiv(Node * current, char * mainnode, char * undernode) {
 
 
-
+        Node *subnode;
         int counter = 0;
+
+
         for (int i = 0; i < MAX_NODE; i++) {
 
-            if (current->pnNodes[i] != NULL) {
+            if(lol == 0) {
 
+                if (current->pnNodes[i] != NULL) {
 
-                if (strcmp(current->pszName, hovednode) == 0) {
-                    break;
+                    if (strcmp(current->pszName, mainnode) == 0) {
 
+                        if (current->pnNodes != NULL) {
+
+                            break;
+                        }
+                    }
+
+                   subnode = rekursiv(current->pnNodes[i], mainnode, undernode);
+                    if(subnode != NULL){
+                        return subnode;
+                    }
+                    else{
+                        return NULL;
+                    }
                 }
-
-                rekursiv(current->pnNodes[i], hovednode, undernode);
             }
             counter++;
         }
 
-        if (counter == 10) {
+        if (counter == MAX_NODE) {
 
             if (strcmp(current->pszName, undernode) == 0) {
 
-                return current;
+                subnode = current;
+
+                return subnode;
 
             }
 
         }
 
-        if (current->pnNodes != NULL)
-            for (int i = 0; i < MAX_NODE; i++) {
 
+        for (int i = 0; i < MAX_NODE; i++) {
+
+            if (current->pnNodes[i] != NULL) {
                 if (strcmp(current->pnNodes[i]->pszName, undernode) == 0) {
+                    subnode = current->pnNodes[i];
 
-                    if(current->pnNodes[i])longjmp(env, 1);
+                    return subnode;
 
                 }
 
             }
 
 
-}
+        }
+
+    }
 
 
 void printAll(Node * current, char * folder) {
@@ -435,8 +455,9 @@ int main(void) {
 
     char * filename = "file.txt";
     readFile(filename);
-
-    GetText("text", "no");
+    Node * r = root;
+    puts("hallo");
+    //GetText("hggu", "guug");
 
    // printAll(root, root->pszName);
 
