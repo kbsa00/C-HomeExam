@@ -349,6 +349,7 @@ char * GetText(char * undernode, char * hovednode){
         conducter = GetTextRekursiv(conducter,hovednode,undernode);
 
         if(conducter != NULL){
+            puts(conducter->pszString);
             return conducter->pszString;
         }
         else{
@@ -396,8 +397,6 @@ Node * GetTextRekursiv(Node * current, char * mainnode, char * undernode) {
                 subnode = GetTextRekursiv(current->pnNodes[i], mainnode, undernode);
             }
 
-
-
         }
 
         //Vil returnere hvis den finner undernoden i en annen gren enn MainNode..
@@ -423,9 +422,7 @@ Node * GetTextRekursiv(Node * current, char * mainnode, char * undernode) {
                     return subnode;
 
                 }
-
             }
-
 
         }
 
@@ -439,6 +436,35 @@ Node * GetTextRekursiv(Node * current, char * mainnode, char * undernode) {
 
 }
 
+void Enumurate(char * keyname, void * callback(Node * current, char * pstring, ULONG ulIntval)){
+
+    char * path = malloc(sizeof(strlen(keyname)+1));
+    strncpy(path, keyname, strlen(keyname)-1);
+
+    Node * conducter;
+    conducter = root;
+
+    if(conducter != NULL){
+        conducter = GetCurrentNode(path);
+
+        for (int i = 0; i < MAX_NODE ; i++) {
+
+            if(conducter->pnNodes[i] != NULL){
+                printf("Name: %s\n", conducter->pnNodes[i]->pszName);
+                callback(conducter->pnNodes[i], conducter->pszString, conducter->ulIntval);
+            }
+
+        }
+
+    } else{
+        printf("Noe gikk galt med conducter");
+    }
+}
+
+void * callback(Node * current, char * pstring, ULONG ulIntval){
+
+    printf("%s\n", current->pszString);
+}
 
 void printAll(Node * current, char * folder) {
 
@@ -478,6 +504,9 @@ int main(void) {
     readFile(filename);
     Node * r = root;
 
+    //GetText("button_ok", "no");
+
+    Enumurate("config.update.*", void * callback(Node * current, char * pstring, ULONG ulIntval));
 
    // printAll(root, root->pszName);
 
