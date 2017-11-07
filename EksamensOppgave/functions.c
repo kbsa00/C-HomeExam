@@ -63,7 +63,7 @@ void readFile(char * filename){
     }
     fclose(fpointer);
 
-    sortAlphabetical(dataValue, counterLines);
+    //sortAlphabetical(dataValue, counterLines);
 
     //Lager B-Treet etter at tekstfilen er lagret i minnet og er ferdig sortert.
     for(int i = 0; i < counterLines; i++){

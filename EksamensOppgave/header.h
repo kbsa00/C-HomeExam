@@ -38,8 +38,8 @@ char * GetString(char * keyvalue);
 char * GetText(char * undernode, char * hovednode);
 Node * GetTextRekursiv(Node * current, char * hovednode, char * undernod);
 void Delete(char * string);
-void Enumurate(char * keyname, void * callback(Node * current, char * pstring, ULONG ulIntval));
-void * callback(Node * current, char * pstring, ULONG ulIntval);
+void Enumurate(char * keyname);
+void  callback(Node * current);
 
 
 

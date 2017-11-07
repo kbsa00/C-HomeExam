@@ -14,7 +14,7 @@
  * Funksjonen printer også ut hele prossessen av å lage B-treet.
  *
  */
-
+typedef void (cbFunc)(Node * current);
 
 
 void checkNode(char * textline){
@@ -436,13 +436,15 @@ Node * GetTextRekursiv(Node * current, char * mainnode, char * undernode) {
 
 }
 
-void Enumurate(char * keyname, void * callback(Node * current, char * pstring, ULONG ulIntval)){
+void Enumurate(char * keyname){
 
     char * path = malloc(sizeof(strlen(keyname)+1));
+    char * value = malloc(sizeof(strlen(keyname)+1));
     strncpy(path, keyname, strlen(keyname)-1);
 
     Node * conducter;
     conducter = root;
+    cbFunc * CB = &callback;
 
     if(conducter != NULL){
         conducter = GetCurrentNode(path);
@@ -450,8 +452,7 @@ void Enumurate(char * keyname, void * callback(Node * current, char * pstring, U
         for (int i = 0; i < MAX_NODE ; i++) {
 
             if(conducter->pnNodes[i] != NULL){
-                printf("Name: %s\n", conducter->pnNodes[i]->pszName);
-                callback(conducter->pnNodes[i], conducter->pszString, conducter->ulIntval);
+               CB(conducter->pnNodes[i]);
             }
 
         }
@@ -461,9 +462,18 @@ void Enumurate(char * keyname, void * callback(Node * current, char * pstring, U
     }
 }
 
-void * callback(Node * current, char * pstring, ULONG ulIntval){
+void callback(Node * current){
 
-    printf("%s\n", current->pszString);
+    printf("Name: %s", current->pszName);
+
+    if(current->pszString != NULL){
+        printf("\tString verdi: %s", current->pszString);
+    }
+    else{
+        printf("\tULONG verdi: %lu", current->ulIntval);
+    }
+
+    printf("\n");
 }
 
 void printAll(Node * current, char * folder) {
@@ -504,9 +514,9 @@ int main(void) {
     readFile(filename);
     Node * r = root;
 
-    //GetText("button_ok", "no");
+    //GetText("button_cancel", "no");
 
-    Enumurate("config.update.*", void * callback(Node * current, char * pstring, ULONG ulIntval));
+    //Enumurate("config.update.*");
 
    // printAll(root, root->pszName);
 
