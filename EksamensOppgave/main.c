@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "header.h"
 #include <stdbool.h>
-#include <setjmp.h>
+
 
 /**
  * checkNode tar høyde for å sjekke om Noden allerede finnes i B-Treet.
@@ -15,7 +15,7 @@
  *
  */
 
-int lol;
+
 
 void checkNode(char * textline){
 
@@ -331,8 +331,14 @@ void Delete(char * string){
     }
 
 }
-
-void GetText(char * undernode, char * hovednode){
+/**
+ * Funksjonen tar i mot to streng navn, en mappe node og en node med verdi.
+ * Funksjonen vil sender videre informasjonen til en rekursiv funksjon som leter gjennom
+ * B-Treet og returnerer dette. Dermed vil GetText funksjonen returnere nodens string verdi
+ * eller returnere NULL hvis det ikke finnes.
+ *
+ */
+char * GetText(char * undernode, char * hovednode){
 
     Node * conducter;
     conducter = root;
@@ -340,9 +346,14 @@ void GetText(char * undernode, char * hovednode){
     if(conducter != NULL){
 
 
-        conducter = rekursiv(conducter,hovednode,undernode);
+        conducter = GetTextRekursiv(conducter,hovednode,undernode);
 
-        puts(conducter->pszName);
+        if(conducter != NULL){
+            return conducter->pszString;
+        }
+        else{
+            return NULL;
+        }
 
 
     }
@@ -354,8 +365,15 @@ void GetText(char * undernode, char * hovednode){
 
 
 }
-
-Node * rekursiv(Node * current, char * mainnode, char * undernode) {
+/**
+ * En rekursiv funskjon, som tar i mot en node og to string i parameteren.
+ * Funkskjonen kjører rekursiv gjennom hele B-Treet for å finne undernoden
+ * med verdi. Om den ikke finner i den gitte Noden du er utkikk etter. Vil den
+ * sjekke en annen gren og etter den finner dette vil den returnere
+ * noden.
+ *
+ */
+Node * GetTextRekursiv(Node * current, char * mainnode, char * undernode) {
 
 
         Node *subnode;
@@ -364,9 +382,9 @@ Node * rekursiv(Node * current, char * mainnode, char * undernode) {
 
         for (int i = 0; i < MAX_NODE; i++) {
 
-            if(lol == 0) {
+            counter++;
 
-                if (current->pnNodes[i] != NULL) {
+            if (current->pnNodes[i] != NULL) {
 
                     if (strcmp(current->pszName, mainnode) == 0) {
 
@@ -375,22 +393,17 @@ Node * rekursiv(Node * current, char * mainnode, char * undernode) {
                             break;
                         }
                     }
-
-                   subnode = rekursiv(current->pnNodes[i], mainnode, undernode);
-                    if(subnode != NULL){
-                        return subnode;
-                    }
-                    else{
-                        return NULL;
-                    }
-                }
+                subnode = GetTextRekursiv(current->pnNodes[i], mainnode, undernode);
             }
-            counter++;
+
+
+
         }
 
+        //Vil returnere hvis den finner undernoden i en annen gren enn MainNode..
         if (counter == MAX_NODE) {
 
-            if (strcmp(current->pszName, undernode) == 0) {
+            if (strcmp(current->pszName, undernode) == 0){
 
                 subnode = current;
 
@@ -400,7 +413,7 @@ Node * rekursiv(Node * current, char * mainnode, char * undernode) {
 
         }
 
-
+        //Sjekker om Mappe noden har en underliggende node med navnet som undernode er..
         for (int i = 0; i < MAX_NODE; i++) {
 
             if (current->pnNodes[i] != NULL) {
@@ -416,7 +429,15 @@ Node * rekursiv(Node * current, char * mainnode, char * undernode) {
 
         }
 
+
+    if(subnode != NULL){
+        return subnode;
     }
+    else{
+        return NULL;
+    }
+
+}
 
 
 void printAll(Node * current, char * folder) {
@@ -456,8 +477,7 @@ int main(void) {
     char * filename = "file.txt";
     readFile(filename);
     Node * r = root;
-    puts("hallo");
-    //GetText("hggu", "guug");
+
 
    // printAll(root, root->pszName);
 
