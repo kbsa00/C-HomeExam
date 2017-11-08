@@ -5,6 +5,7 @@
 #include "header.h"
 #include <stdbool.h>
 
+Node * curry;
 
 /**
  * checkNode tar høyde for å sjekke om Noden allerede finnes i B-Treet.
@@ -14,9 +15,8 @@
  * Funksjonen printer også ut hele prossessen av å lage B-treet.
  *
  */
-typedef void (cbFunc)(Node * current);
 
-
+int lol;
 void checkNode(char * textline){
 
     Node * conducter = root;
@@ -353,7 +353,7 @@ char * GetText(char * undernode, char * hovednode){
             return conducter->pszString;
         }
         else{
-            return NULL;
+            puts("ttt");
         }
 
 
@@ -374,61 +374,67 @@ char * GetText(char * undernode, char * hovednode){
  * noden.
  *
  */
+
 Node * GetTextRekursiv(Node * current, char * mainnode, char * undernode) {
 
 
-        Node *subnode;
-        int counter = 0;
+    Node * subnode;
+
+    int counter = 0;
 
 
-        for (int i = 0; i < MAX_NODE; i++) {
+    for (int i = 0; i < MAX_NODE; i++) {
 
-            counter++;
+        counter++;
 
-            if (current->pnNodes[i] != NULL) {
+        if (current->pnNodes[i] != NULL) {
 
-                    if (strcmp(current->pszName, mainnode) == 0) {
-
-                        if (current->pnNodes != NULL) {
-
-                            break;
-                        }
-                    }
-                subnode = GetTextRekursiv(current->pnNodes[i], mainnode, undernode);
+            if (strcmp(current->pszName, mainnode) == 0) {
+                break;
             }
-
+            subnode = GetTextRekursiv(current->pnNodes[i], mainnode, undernode);
         }
+
+
+    }
 
         //Vil returnere hvis den finner undernoden i en annen gren enn MainNode..
-        if (counter == MAX_NODE) {
+    /*if (counter == MAX_NODE) {
 
-            if (strcmp(current->pszName, undernode) == 0){
+        if (strcmp(current->pszName, undernode) == 0){
 
-                subnode = current;
-
-                return subnode;
-
-            }
+            subnode1 = current;
+            return subnode1;
 
         }
+
+    }*/
 
         //Sjekker om Mappe noden har en underliggende node med navnet som undernode er..
-        for (int i = 0; i < MAX_NODE; i++) {
+    for (int i = 0; i < MAX_NODE; i++) {
 
-            if (current->pnNodes[i] != NULL) {
-                if (strcmp(current->pnNodes[i]->pszName, undernode) == 0) {
-                    subnode = current->pnNodes[i];
+        if (current->pnNodes[i] != NULL) {
+            if (strcmp(current->pnNodes[i]->pszName, undernode) == 0) {
 
-                    return subnode;
-
+                if(strcmp(current->pszName, mainnode) == 0) {
+                    Node * curry;
+                     curry = current->pnNodes[i];
+                    return curry;
                 }
-            }
+                else{
+                    Node * karri;
+                    karri = current->pnNodes[i];
+                    return karri;
+                }
 
+            }
         }
 
+    }
 
-    if(subnode != NULL){
-        return subnode;
+    if(curry != NULL) {
+
+        return curry;
     }
     else{
         return NULL;
@@ -436,15 +442,13 @@ Node * GetTextRekursiv(Node * current, char * mainnode, char * undernode) {
 
 }
 
-void Enumurate(char * keyname){
+void Enumurate(char * keyname, void (*callback)(Node * current)){
 
-    char * path = malloc(sizeof(strlen(keyname)+1));
-    char * value = malloc(sizeof(strlen(keyname)+1));
+    char * path = calloc(1, sizeof(strlen(keyname)+1));
     strncpy(path, keyname, strlen(keyname)-1);
 
     Node * conducter;
     conducter = root;
-    cbFunc * CB = &callback;
 
     if(conducter != NULL){
         conducter = GetCurrentNode(path);
@@ -452,7 +456,7 @@ void Enumurate(char * keyname){
         for (int i = 0; i < MAX_NODE ; i++) {
 
             if(conducter->pnNodes[i] != NULL){
-               CB(conducter->pnNodes[i]);
+               callback(conducter->pnNodes[i]);
             }
 
         }
@@ -460,11 +464,12 @@ void Enumurate(char * keyname){
     } else{
         printf("Noe gikk galt med conducter");
     }
+    free(path);
 }
 
 void callback(Node * current){
 
-    printf("Name: %s", current->pszName);
+    printf("Name: %s\t", current->pszName);
 
     if(current->pszString != NULL){
         printf("\tString verdi: %s", current->pszString);
@@ -514,12 +519,50 @@ int main(void) {
     readFile(filename);
     Node * r = root;
 
-    //GetText("button_cancel", "no");
+    GetText("header", "no");
+    //Enumurate("strings.en.*", callback);
+    //printAll(root, root->pszName);
 
-    //Enumurate("config.update.*");
 
-   // printAll(root, root->pszName);
 
+
+    /*Node * GetTextRekursiv(Node * current, char * mainnode, char * undernode) {
+
+
+        Node *subnode;
+        int counter = 0;
+
+
+        for (int i = 0; i < MAX_NODE; i++) {
+
+            counter++;
+
+            if (current->pnNodes[i] != NULL) {
+
+                if (strcmp(current->pszName, mainnode) == 0) {
+
+                    if (current->pnNodes != NULL) {
+
+                        break;
+                    }
+                }
+                subnode = GetTextRekursiv(current->pnNodes[i], mainnode, undernode);
+            }
+
+        }
+
+        //Vil returnere hvis den finner undernoden i en annen gren enn MainNode..
+        if (counter == MAX_NODE) {
+
+            if (strcmp(current->pszName, undernode) == 0){
+
+                subnode = current;
+
+                return subnode;
+
+            }
+
+        }*/
 
     return 0;
 }

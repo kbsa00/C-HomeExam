@@ -65,6 +65,10 @@ void readFile(char * filename){
 
     //sortAlphabetical(dataValue, counterLines);
 
+    for (int j = 0; j < counterLines ; j++) {
+        printf("%s\n", *(dataValue+j));
+    }
+
     //Lager B-Treet etter at tekstfilen er lagret i minnet og er ferdig sortert.
     for(int i = 0; i < counterLines; i++){
         checkNode(*(dataValue+i));
