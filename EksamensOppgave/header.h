@@ -36,7 +36,7 @@ Node * GetCurrentNode(char * string);
 ULONG GetULONG(char * keyvalue);
 char * GetString(char * keyvalue);
 char * GetText(char * undernode, char * hovednode);
-Node * GetTextRekursiv(Node * current, char * hovednode, char * undernod);
+char * GetTextRekursiv(Node * current, char * hovednode, char * undernod);
 void Delete(char * string);
 void Enumurate(char * keyname, void (*callback)(Node * current));
 void  callback(Node * current);

@@ -63,7 +63,7 @@ void readFile(char * filename){
     }
     fclose(fpointer);
 
-    //sortAlphabetical(dataValue, counterLines);
+    sortAlphabetical(dataValue, counterLines);
 
     for (int j = 0; j < counterLines ; j++) {
         printf("%s\n", *(dataValue+j));
@@ -161,4 +161,6 @@ Node * GetCurrentNode(char * string){
         exit(0);
     }
 }
+
+
 

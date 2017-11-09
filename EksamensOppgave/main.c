@@ -5,8 +5,7 @@
 #include "header.h"
 #include <stdbool.h>
 
-Node * curry;
-
+char * streng = NULL;
 /**
  * checkNode tar høyde for å sjekke om Noden allerede finnes i B-Treet.
  * Funksjonen setter også verdi for nodene. Om ikke en node finnes sender funksjonen
@@ -16,7 +15,8 @@ Node * curry;
  *
  */
 
-int lol;
+Node * subnode;
+
 void checkNode(char * textline){
 
     Node * conducter = root;
@@ -244,6 +244,7 @@ void Delete(char * string){
             char * del = ".";
             char * token = strtok(substring, del);
             bool boolean = false;
+
             while(token != NULL && boolean != true){
 
                 int index = 0;
@@ -345,15 +346,15 @@ char * GetText(char * undernode, char * hovednode){
 
     if(conducter != NULL){
 
+        char * string;
+        string =  GetTextRekursiv(conducter,hovednode,undernode);
 
-        conducter = GetTextRekursiv(conducter,hovednode,undernode);
-
-        if(conducter != NULL){
-            puts(conducter->pszString);
-            return conducter->pszString;
+        if(string != NULL){
+            puts(string);
+            return string;
         }
         else{
-            puts("ttt");
+            return NULL;
         }
 
 
@@ -366,6 +367,7 @@ char * GetText(char * undernode, char * hovednode){
 
 
 }
+
 /**
  * En rekursiv funskjon, som tar i mot en node og to string i parameteren.
  * Funkskjonen kjører rekursiv gjennom hele B-Treet for å finne undernoden
@@ -375,10 +377,10 @@ char * GetText(char * undernode, char * hovednode){
  *
  */
 
-Node * GetTextRekursiv(Node * current, char * mainnode, char * undernode) {
+char * GetTextRekursiv(Node * current, char * mainnode, char * undernode) {
 
 
-    Node * subnode;
+
 
     int counter = 0;
 
@@ -390,57 +392,62 @@ Node * GetTextRekursiv(Node * current, char * mainnode, char * undernode) {
         if (current->pnNodes[i] != NULL) {
 
             if (strcmp(current->pszName, mainnode) == 0) {
-                break;
+                 break;
             }
-            subnode = GetTextRekursiv(current->pnNodes[i], mainnode, undernode);
-        }
 
+
+
+            streng = GetTextRekursiv(current->pnNodes[i], mainnode, undernode);
+        }
 
     }
 
-        //Vil returnere hvis den finner undernoden i en annen gren enn MainNode..
-    /*if (counter == MAX_NODE) {
+    //Vil returnere hvis den finner undernoden i en annen gren enn MainNode..
+    if (counter == MAX_NODE) {
 
         if (strcmp(current->pszName, undernode) == 0){
 
-            subnode1 = current;
-            return subnode1;
+            char * value1 = current->pszString;
 
-        }
+            if(streng == NULL) {
 
-    }*/
-
-        //Sjekker om Mappe noden har en underliggende node med navnet som undernode er..
-    for (int i = 0; i < MAX_NODE; i++) {
-
-        if (current->pnNodes[i] != NULL) {
-            if (strcmp(current->pnNodes[i]->pszName, undernode) == 0) {
-
-                if(strcmp(current->pszName, mainnode) == 0) {
-                    Node * curry;
-                     curry = current->pnNodes[i];
-                    return curry;
-                }
-                else{
-                    Node * karri;
-                    karri = current->pnNodes[i];
-                    return karri;
-                }
+                return value1;
 
             }
         }
 
     }
 
-    if(curry != NULL) {
 
-        return curry;
+    if(strcmp(current->pszName, mainnode) == 0){
+
+        for(int i = 0; i < MAX_NODE; i++){
+
+            if(current->pnNodes[i] != NULL) {
+
+                if (strcmp(current->pnNodes[i]->pszName, undernode) == 0) {
+                    char * value = current->pnNodes[i]->pszString;
+                    return value;
+                }
+            }
+
+        }
+
     }
-    else{
+
+    if(streng != NULL){
+        return streng;
+    }
+    else
+    {
         return NULL;
     }
 
+
+
 }
+
+
 
 void Enumurate(char * keyname, void (*callback)(Node * current)){
 
@@ -519,7 +526,9 @@ int main(void) {
     readFile(filename);
     Node * r = root;
 
-    GetText("header", "no");
+    GetText("button_cancel", "en");
+
+
     //Enumurate("strings.en.*", callback);
     //printAll(root, root->pszName);
 
