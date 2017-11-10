@@ -243,6 +243,7 @@ void Delete(char * string){
 
 
         if(subnode->pszString == NULL && subnode->ulIntval == 0){
+            //Sletter mappe-noden sine underliggende noder.
             printf("Deleting folder: %s \nAlso deleting nodes in the folder..\n", subnode->pszName);
 
             for(int i = 0; i < MAX_NODE; i++){
@@ -253,6 +254,8 @@ void Delete(char * string){
             char * del = ".";
             char * token = strtok(substring, del);
             bool boolean = false;
+
+            //Sletter mappen etter at undernodene har blitt slettet..
 
             while(token != NULL && boolean != true){
 
@@ -334,11 +337,15 @@ void Delete(char * string){
 
         }
 
+        free(keyvalue);
+        free(substring);
+
     }
     else{
         printf("Noe gikk galt med Root\n");
         exit(0);
     }
+
 
 }
 /**
@@ -512,7 +519,6 @@ int main(void) {
     readFile(filename);
 
 
-
     while(1){
 
         int num;
@@ -549,7 +555,7 @@ int main(void) {
                 break;
 
             case 3:
-                printf("\nYou have now chosen GetULONG.\nPlease write input like 'config.update.server1' or 'strings.no.header'\n");
+                printf("\nYou have now chosen GetULONG.\nPlease write input like 'config.update.interval' \n");
                 ULONG ulongvalue;
                 printf("Input your string: ");
                 scanf("%s", input);
@@ -561,7 +567,7 @@ int main(void) {
                 printf("\nYou have now chosen GetText.\nPlease write input like 'button_cancel' and 'no'\n");
                 char * value;
                 char name[70];
-                printf("Input the underNode, f.e. 'button_cancel' : ");
+                printf("\nInput the underNode, f.e. 'button_cancel' : ");
                 scanf("%s", name);
                 printf("\nInput the mainNode, f.e. 'no' : ");
                 scanf("%s", input);
@@ -585,18 +591,16 @@ int main(void) {
                 break;
 
             case 7:
-                printf("\nYou choose to end the program.\nHave a great day!");
+                printf("\nYou choose to end the program.\nHave a great day!\n");
                 exit(0);
 
 
             default: printf("Wrong number input\n");
 
-
         }
 
 
     }
-
 
     return 0;
 }

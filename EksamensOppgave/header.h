@@ -7,7 +7,7 @@
 #define intvalue "Keyvalue you sent inn contains: Integer Value"
 #define stringValue "Keyvalue you sent in contains: String Value"
 #define Mappe "Keyvalue you sent in is a folder"
-#define feilkode "Finner ikke katalogen"
+#define feilkode "Can't find the directory.."
 #define fDatatype "Wrong Datatype"
 
 
