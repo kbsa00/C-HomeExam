@@ -6,6 +6,8 @@
 #include <stdbool.h>
 
 char * streng = NULL;
+char input[70];
+
 /**
  * checkNode tar høyde for å sjekke om Noden allerede finnes i B-Treet.
  * Funksjonen setter også verdi for nodene. Om ikke en node finnes sender funksjonen
@@ -15,7 +17,6 @@ char * streng = NULL;
  *
  */
 
-Node * subnode;
 
 void checkNode(char * textline){
 
@@ -125,7 +126,7 @@ Node * createSubNode(Node * parentNode, char * string){
  * presentere for brukeren om hvilken type node dette er.
  */
 
-void GetType(char * namenode){
+char * GetType(char * namenode){
     Node * conducter;
     char * name = calloc(1, sizeof(strlen(namenode)));
     strcpy(name, namenode);
@@ -140,13 +141,13 @@ void GetType(char * namenode){
     if(conducter != NULL){
 
         if(conducter->pszString == NULL && conducter->ulIntval == 0){
-            printf("Nøkkelnavnet du sendte inn er en %s\n",Mappe);
+            return Mappe;
         }
         else if(conducter->pszString != NULL){
-            printf("Nøkkelnavnet du sendte inn inneholder en %s\n",stringValue);
+            return stringValue;
         }
         else if(conducter->ulIntval != 0){
-            printf("Nøkkelnavnet du sendte inn inneholder en %s\n", intvalue);
+            return intvalue;
         }
 
     }else{
@@ -160,6 +161,7 @@ void GetType(char * namenode){
  * GetString funksjonen tar i mot en Keyvalue fra brukeren og returner Nodens String verdi.
  * I tillegg til at den tar høyde for at Noden ikke har en String verdi.
  */
+
  char * GetString(char * keyvalue){
 
     Node * conducter;
@@ -219,6 +221,13 @@ ULONG GetULONG(char * keyvalue){
     return 1;
 }
 
+/**
+ *  Delete funksjonen vil ta i mot en nøkkelverdi og slette brukerens node.
+ *  Funksjonen tar høyde for at du kan slette en mappe med underliggende noder og
+ *  en node med underverdi.
+ *
+ */
+
 void Delete(char * string){
 
     Node * conducter = root;
@@ -234,7 +243,7 @@ void Delete(char * string){
 
 
         if(subnode->pszString == NULL && subnode->ulIntval == 0){
-            printf("Sletter mappe: %s \nSletter også alle undernoder i mappen..\n", subnode->pszName);
+            printf("Deleting folder: %s \nAlso deleting nodes in the folder..\n", subnode->pszName);
 
             for(int i = 0; i < MAX_NODE; i++){
                 free(subnode->pnNodes[i]);
@@ -261,7 +270,7 @@ void Delete(char * string){
                                 free(conducter->pnNodes[i]);
                                 conducter->pnNodes[i] = NULL;
                                 boolean = true;
-                                printf("Mappen er nå SLETTET!\n");
+                                printf("Folder is now DELETED!\n");
                                 break;
                             }
 
@@ -282,7 +291,7 @@ void Delete(char * string){
             char * del = ".";
             char * token = strtok(substring, del);
 
-            printf("Du vil slette %s-node med en verdi\n", subnode->pszName);
+            printf("You want to delete %s-node with a value\n", subnode->pszName);
 
             bool boolean = false;
             while(token != NULL && boolean != true){
@@ -308,10 +317,10 @@ void Delete(char * string){
                         ret = strncmp(conducter->pnNodes[i]->pszName, subnode->pszName, sizeof(strlen(subnode->pszName)));
 
                         if (ret == 0){
-                            printf("Sletter nå %s\n", subnode->pszName);
+                            printf("Deleting now %s\n", subnode->pszName);
                             free(conducter->pnNodes[i]);
                             conducter->pnNodes[i] = NULL;
-                            printf("SLETTET fra B-Treet!\n");
+                            printf("Deleted from the B-Tree!\n");
                             boolean = true;
                             break;
 
@@ -350,7 +359,7 @@ char * GetText(char * undernode, char * hovednode){
         string =  GetTextRekursiv(conducter,hovednode,undernode);
 
         if(string != NULL){
-            puts(string);
+
             return string;
         }
         else{
@@ -378,8 +387,6 @@ char * GetText(char * undernode, char * hovednode){
  */
 
 char * GetTextRekursiv(Node * current, char * mainnode, char * undernode) {
-
-
 
 
     int counter = 0;
@@ -446,8 +453,10 @@ char * GetTextRekursiv(Node * current, char * mainnode, char * undernode) {
 
 
 }
-
-
+/**
+ * Enumurate funksjonen enumurerer alle underliggende noder i mappen.
+ * Dermed bruker den en callbackfunksjon, som printer ut nodens navn og verdi.
+ */
 
 void Enumurate(char * keyname, void (*callback)(Node * current)){
 
@@ -474,6 +483,11 @@ void Enumurate(char * keyname, void (*callback)(Node * current)){
     free(path);
 }
 
+
+/**
+ * Callback funksjonen vil printe ut navnet på noden og printer ut deres verdier.
+ */
+
 void callback(Node * current){
 
     printf("Name: %s\t", current->pszName);
@@ -484,38 +498,10 @@ void callback(Node * current){
     else{
         printf("\tULONG verdi: %lu", current->ulIntval);
     }
-
     printf("\n");
 }
 
-void printAll(Node * current, char * folder) {
 
-   /*  char *  pfolder = malloc(sizeof(char) + strlen(folder + 2));
-
-     for (int i = 0; i < MAX_NODE ; i++){
-
-         if(current->pnNodes[i] != NULL){
-             strcpy(pfolder, folder);
-             pfolder = realloc(pfolder,sizeof(char) * strlen(folder) + strlen(current->pnNodes[i]->pszName + 2));
-             strcat(pfolder, ".");
-             strcat(pfolder, current->pnNodes[i]->pszName);
-             printAll(current->pnNodes[i], pfolder);
-         }
-     }
-
-
-     if(current->pnNodes[0] == NULL){
-
-         if(current->pszString != NULL){
-             printf("%s = %s.", folder, (current->pszString));
-             printf("\n");
-         }
-         else{
-             printf("%s = %lu", folder, current->ulIntval);
-             printf("\n");
-         }
-     }*/
-}
 
 
 int main(void) {
@@ -524,54 +510,93 @@ int main(void) {
 
     char * filename = "file.txt";
     readFile(filename);
-    Node * r = root;
-
-    GetText("button_cancel", "en");
-
-
-    //Enumurate("strings.en.*", callback);
-    //printAll(root, root->pszName);
 
 
 
+    while(1){
 
-    /*Node * GetTextRekursiv(Node * current, char * mainnode, char * undernode) {
+        int num;
+
+        puts("\nPress 1 for the function GetType()");
+        puts("Press 2 for the function GetString()");
+        puts("Press 3 for the function GetInt/GetUlong()");
+        puts("Press 4 for the function GetText");
+        puts("Press 5 for the function Delete()");
+        puts("Press 6 for the function Enumurate()");
+        puts("Press 7 for Exiting the program\n");
+
+        printf("Insert your input: ");
+        scanf("%d", &num);
+
+        switch(num){
+
+            case 1:
+                printf("\nYou have now chosen GetType.\nPlease write input like 'config.update.interval' or 'string.no'\n");
+                char * typevalue;
+                printf("Input your string: ");
+                scanf("%s",input);
+                typevalue = GetType(input);
+                printf("\n%s\n", typevalue);
+                break;
+
+            case 2:
+                printf("\nYou have now chosen GetString.\nPlease write input like 'config.update.server1' or 'strings.no.header'\n");
+                char * stringvalue;
+                printf("Input your string: ");
+                scanf("%s",input);
+                stringvalue = GetString(input);
+                printf("\nString value returned: %s\n", stringvalue);
+                break;
+
+            case 3:
+                printf("\nYou have now chosen GetULONG.\nPlease write input like 'config.update.server1' or 'strings.no.header'\n");
+                ULONG ulongvalue;
+                printf("Input your string: ");
+                scanf("%s", input);
+                ulongvalue = GetULONG(input);
+                printf("\nULONG value returned: %lu\n\n", ulongvalue);
+                break;
+
+            case 4:
+                printf("\nYou have now chosen GetText.\nPlease write input like 'button_cancel' and 'no'\n");
+                char * value;
+                char name[70];
+                printf("Input the underNode, f.e. 'button_cancel' : ");
+                scanf("%s", name);
+                printf("\nInput the mainNode, f.e. 'no' : ");
+                scanf("%s", input);
+                value = GetText(name, input);
+                printf("\nValue returned: %s\n", value);
+                break;
+
+            case 5:
+                printf("\nYou have now chosen Delete.\nPlease write input like 'strings.no.' or 'config.update.interval' \n");
+                printf("Input your string: ");
+                scanf("%s", input);
+                Delete(input);
+                break;
 
 
-        Node *subnode;
-        int counter = 0;
+            case 6:
+                printf("\nYou have now chosen Enumerate.\nPlease write input like 'config.update.*' \n");
+                printf("Input your string: ");
+                scanf("%s", input);
+                Enumurate(input, callback);
+                break;
+
+            case 7:
+                printf("\nYou choose to end the program.\nHave a great day!");
+                exit(0);
 
 
-        for (int i = 0; i < MAX_NODE; i++) {
+            default: printf("Wrong number input\n");
 
-            counter++;
-
-            if (current->pnNodes[i] != NULL) {
-
-                if (strcmp(current->pszName, mainnode) == 0) {
-
-                    if (current->pnNodes != NULL) {
-
-                        break;
-                    }
-                }
-                subnode = GetTextRekursiv(current->pnNodes[i], mainnode, undernode);
-            }
 
         }
 
-        //Vil returnere hvis den finner undernoden i en annen gren enn MainNode..
-        if (counter == MAX_NODE) {
 
-            if (strcmp(current->pszName, undernode) == 0){
+    }
 
-                subnode = current;
-
-                return subnode;
-
-            }
-
-        }*/
 
     return 0;
 }

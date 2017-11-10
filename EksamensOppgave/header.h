@@ -4,11 +4,11 @@
 #define EKSAMENSOPPGAVE_HEADER_H
 
 #define MAX_NODE  10
-#define intvalue "Integer Value"
-#define stringValue "String Value"
-#define Mappe "Mappe"
+#define intvalue "Keyvalue you sent inn contains: Integer Value"
+#define stringValue "Keyvalue you sent in contains: String Value"
+#define Mappe "Keyvalue you sent in is a folder"
 #define feilkode "Finner ikke katalogen"
-#define fDatatype "Feil Datatype"
+#define fDatatype "Wrong Datatype"
 
 
 typedef unsigned long ULONG;
@@ -30,8 +30,7 @@ void readFile(char * filename);
 void sortAlphabetical(char * textFile[], int size);
 void checkNode(char * textline);
 Node * createSubNode(Node * parentNode, char * string);
-void printAll(Node * current, char * folder);
-void GetType(char * string);
+char * GetType(char * string);
 Node * GetCurrentNode(char * string);
 ULONG GetULONG(char * keyvalue);
 char * GetString(char * keyvalue);
