@@ -81,13 +81,6 @@ void Enumurate(char * keyname, void (*callback)(Node * current));
 void  callback(Node * current); (Enumurate og Callback, enumurerer nodene og 
 printer disse ut på en respektabelt måte.) 
 
-_______________________________________________________________________________
-
-Alle funksjoner skal fungere på en riktig måte utenom Delete(). 
-Jeg tar dessverre ikke høyde for at Delete må sjekke gjennom hele B-Treet
-for å se om noen av mappene er tomme, Men derimot sletter kun det Nøkkel-verdien den får inn.
-Potensiel måte å løse dette på er å sjekke treet i en rekursiv måte. 
-
 
 
 
