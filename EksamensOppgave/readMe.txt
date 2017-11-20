@@ -1,4 +1,4 @@
-
+//Hjemme-eksamen i Programmering i C.
 Info før du kjører programmet:  
 
 Programmet tar imot void parameteren.
