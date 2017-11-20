@@ -1,7 +1,4 @@
 
-Oppgaven ble løst i Alternativ B. 
-_________________________________
-
 Info før du kjører programmet:  
 
 Programmet tar imot void parameteren.
