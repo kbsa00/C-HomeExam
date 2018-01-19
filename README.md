@@ -36,7 +36,7 @@ void  callback(Node * current);
 ```
 
 
-###### function.c 
+###### functions.c 
 ```c
 void readFile(char * filename);
 void sortAlphabetical(char * textFile[], int size);
